@@ -27,9 +27,8 @@ export function HeroSection() {
         delay: 0.2,
       });
 
-      // Heading entrance
+      // Heading entrance — opacity only, no y conflict with parallax
       gsap.from(headingRef.current, {
-        y: 60,
         opacity: 0,
         duration: 1.2,
         ease: "power3.out",
@@ -56,15 +55,15 @@ export function HeroSection() {
         }
       );
 
-      // Parallax on scroll
+      // Parallax on scroll — y movement only, NO opacity fade
+      // This ensures heading always reappears when scrolling back to top
       gsap.to(headingRef.current, {
-        y: -100,
-        opacity: 0,
+        y: -80,
         ease: "none",
         scrollTrigger: {
           trigger: sectionRef.current,
           start: "top top",
-          end: "bottom top",
+          end: "60% top",
           scrub: 1,
         },
       });
@@ -89,15 +88,6 @@ export function HeroSection() {
       ref={sectionRef}
       className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden"
     >
-      {/* Background glow */}
-      <div
-        className="absolute inset-0"
-        style={{
-          background:
-            "radial-gradient(ellipse at center bottom, rgba(45, 74, 62, 0.2) 0%, transparent 60%)",
-        }}
-      />
-
       {/* Dot pattern */}
       <div className="absolute inset-0 dot-pattern opacity-30" />
 
@@ -150,9 +140,6 @@ export function HeroSection() {
         </span>
         <ChevronDown className="w-4 h-4 animate-bounce text-brand-light" />
       </div>
-
-      {/* Bottom divider */}
-      <div className="absolute bottom-0 left-0 right-0 gradient-divider" />
     </section>
   );
 }

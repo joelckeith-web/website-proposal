@@ -11,19 +11,19 @@ gsap.registerPlugin(ScrollTrigger);
 const annotations = [
   {
     label: "Video hero with trust signals",
-    position: { top: "8%", left: "-10%" },
+    position: { top: "15%", left: "-12%" },
     dotSide: "right" as const,
     delay: 0,
   },
   {
     label: "Click-to-call CTA",
-    position: { top: "8%", right: "-10%" },
+    position: { top: "4%", right: "-8%" },
     dotSide: "left" as const,
     delay: 0.2,
   },
   {
     label: "Immediate credibility metrics",
-    position: { bottom: "12%", left: "50%", transform: "translateX(-50%)" },
+    position: { bottom: "18%", left: "50%", transform: "translateX(-50%)" },
     dotSide: "top" as const,
     delay: 0.4,
   },
@@ -145,7 +145,6 @@ export function HomepageShowcase() {
         </div>
       </div>
 
-      <div className="absolute bottom-0 left-0 right-0 gradient-divider" />
     </section>
   );
 }

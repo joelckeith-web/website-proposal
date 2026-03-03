@@ -4,7 +4,6 @@ import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { BrowserFrame } from "../ui/DeviceFrame";
-import { ScreenImage } from "../ui/ScreenImage";
 import { Star, Shield, Award, Users, Clock, Heart } from "lucide-react";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -76,12 +75,12 @@ export function TrustSection() {
         },
       });
 
-      // Scroll the reviews image horizontally to simulate carousel
+      // Scroll the reviews image VERTICALLY to simulate the reviews carousel scrolling
       if (reviewsImgRef.current) {
         const img = reviewsImgRef.current.querySelector("img");
         if (img) {
           gsap.to(img, {
-            xPercent: -10,
+            yPercent: -25,
             ease: "none",
             scrollTrigger: {
               trigger: browserRef.current,
@@ -116,7 +115,7 @@ export function TrustSection() {
   return (
     <section
       ref={sectionRef}
-      className="relative py-24 md:py-32 px-6 md:px-12 lg:px-20 xl:px-32 section-glow"
+      className="relative py-24 md:py-32 px-6 md:px-12 lg:px-20 xl:px-32"
     >
       <div className="relative z-10 mx-auto w-full max-w-7xl">
         {/* Heading */}
@@ -137,7 +136,13 @@ export function TrustSection() {
         <div ref={browserRef} className="mb-12 max-w-5xl mx-auto">
           <BrowserFrame url="outdoor-renovations.vercel.app/#reviews">
             <div className="aspect-video overflow-hidden" ref={reviewsImgRef}>
-              <ScreenImage variant="reviews" />
+              {/* eslint-disable @next/next/no-img-element */}
+              <img
+                src="/screenshots/homepage-reviews.png"
+                alt="Outdoor Renovations client testimonials carousel"
+                className="w-full"
+                loading="lazy"
+              />
             </div>
           </BrowserFrame>
         </div>
@@ -160,7 +165,6 @@ export function TrustSection() {
         </div>
       </div>
 
-      <div className="absolute bottom-0 left-0 right-0 gradient-divider" />
     </section>
   );
 }

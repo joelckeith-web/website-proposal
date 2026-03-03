@@ -45,6 +45,10 @@ const screenshotMap: Record<string, { src: string; alt: string }> = {
     src: "/screenshots/mobile-service-detail.png",
     alt: "Outdoor Renovations mobile service detail view",
   },
+  "location-page": {
+    src: "/screenshots/location-page.png",
+    alt: "Outdoor Renovations Austin location page with local SEO content",
+  },
 };
 
 interface ScreenImageProps {

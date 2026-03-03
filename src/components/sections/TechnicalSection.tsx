@@ -117,7 +117,15 @@ function AnimatedRing({ label, value, color }: { label: string; value: number; c
         }
       >
         <div className="w-[calc(100%-12px)] h-[calc(100%-12px)] rounded-full bg-background flex items-center justify-center">
-          <span className="text-3xl md:text-4xl font-black" style={{ color }}>
+          <span
+            className="text-3xl md:text-4xl font-black"
+            style={{
+              background: "linear-gradient(135deg, #2D4A3E 0%, #6B8F7B 50%, #4CC9F0 100%)",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+              backgroundClip: "text",
+            }}
+          >
             {displayValue}
           </span>
         </div>
@@ -172,7 +180,7 @@ export function TechnicalSection() {
   return (
     <section
       ref={sectionRef}
-      className="relative py-24 md:py-32 px-6 md:px-12 lg:px-20 xl:px-32 section-glow"
+      className="relative py-24 md:py-32 px-6 md:px-12 lg:px-20 xl:px-32"
     >
       <div className="relative z-10 mx-auto w-full max-w-7xl">
         {/* Heading */}
@@ -226,7 +234,6 @@ export function TechnicalSection() {
         </div>
       </div>
 
-      <div className="absolute bottom-0 left-0 right-0 gradient-divider" />
     </section>
   );
 }

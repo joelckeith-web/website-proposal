@@ -75,22 +75,35 @@ export function MobileExperience() {
         });
       }
 
-      // Stats stagger
+      // Stats stagger — use fromTo with aggressive trigger
       const statCards = statsRef.current?.children;
       if (statCards) {
-        gsap.from(statCards, {
-          y: 40,
-          opacity: 0,
-          duration: 0.6,
-          stagger: 0.1,
-          ease: "power3.out",
-          scrollTrigger: {
-            trigger: statsRef.current,
-            start: "top 90%",
-            toggleActions: "play none none none",
-          },
-        });
+        gsap.fromTo(
+          statCards,
+          { y: 30, opacity: 0 },
+          {
+            y: 0,
+            opacity: 1,
+            duration: 0.6,
+            stagger: 0.1,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: statsRef.current,
+              start: "top 98%",
+              toggleActions: "play none none none",
+            },
+          }
+        );
       }
+
+      // Fallback: ensure cards become visible after 3s even without scroll trigger
+      gsap.to(statCards || [], {
+        opacity: 1,
+        y: 0,
+        delay: 3,
+        duration: 0.5,
+        overwrite: false,
+      });
     }, sectionRef);
 
     return () => ctx.revert();
@@ -119,7 +132,7 @@ export function MobileExperience() {
         {/* Phone array */}
         <div
           ref={phonesRef}
-          className="flex justify-center items-end gap-4 md:gap-8 mb-20"
+          className="flex justify-center items-end gap-4 md:gap-8 mb-16"
         >
           {(["mobile-home", "mobile-service-detail", "mobile-services"] as const).map(
             (variant, i) => (
@@ -129,7 +142,20 @@ export function MobileExperience() {
                 style={{ transformOrigin: "bottom center" }}
               >
                 <PhoneFrame>
-                  <ScreenImage variant={variant} />
+                  {i === 1 ? (
+                    /* Center phone: perpetual looping scroll */
+                    <div className="phone-scroll-anim" style={{ height: "100%", overflow: "hidden" }}>
+                      {/* eslint-disable @next/next/no-img-element */}
+                      <img
+                        src="/screenshots/mobile-service-detail.png"
+                        alt="Mobile service detail - scrolling"
+                        className="w-full"
+                        loading="lazy"
+                      />
+                    </div>
+                  ) : (
+                    <ScreenImage variant={variant} />
+                  )}
                 </PhoneFrame>
               </div>
             )
@@ -151,7 +177,6 @@ export function MobileExperience() {
         </div>
       </div>
 
-      <div className="absolute bottom-0 left-0 right-0 gradient-divider" />
     </section>
   );
 }

@@ -15,6 +15,9 @@ import { ClosingSection } from "@/components/sections/ClosingSection";
 export default function WebsiteShowcase() {
   return (
     <main>
+      {/* Fixed background glow — persistent Apple/Samsung-style bg */}
+      <div className="fixed-bg-glow" />
+
       <ScrollProgress />
       <Navigation />
 

@@ -16,7 +16,6 @@ const tabs = [
     description:
       "Sticky header with phone number on every page. One tap from any screen to connect directly with the business.",
     screenshot: "hero" as const,
-    highlight: "top-right",
   },
   {
     icon: MousePointerClick,
@@ -24,23 +23,20 @@ const tabs = [
     description:
       '"Get a Consultation" buttons placed at every natural decision point throughout the site. Above the fold, after services, below reviews.',
     screenshot: "contact-cta" as const,
-    highlight: "center",
   },
   {
     icon: FileText,
     title: "Smart Contact Forms",
     description:
       "React Hook Form with field validation, designed for quick mobile completion. Name, phone, service type — three fields to a lead.",
-    screenshot: "contact" as const,
-    highlight: "center",
+    screenshot: "service-detail" as const,
   },
   {
     icon: MapPin,
     title: "10+ Location Pages",
     description:
       "City-specific landing pages targeting local search intent across the Austin metro area. Each page is SEO-optimized for that city.",
-    screenshot: "services" as const,
-    highlight: "full",
+    screenshot: "location-page" as const,
   },
 ];
 
@@ -81,13 +77,13 @@ export function ConversionSection() {
     return () => ctx.revert();
   }, []);
 
-  // Animate panel on tab change
+  // Animate panel on tab change — expand left to right
   useEffect(() => {
     if (panelRef.current) {
       gsap.fromTo(
         panelRef.current,
-        { opacity: 0, y: 20 },
-        { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" }
+        { opacity: 0, x: -30 },
+        { opacity: 1, x: 0, duration: 0.5, ease: "power2.out" }
       );
     }
   }, [activeTab]);
@@ -115,19 +111,19 @@ export function ConversionSection() {
           </p>
         </div>
 
-        {/* Apple-style tabs + content panel */}
-        <div ref={contentRef}>
-          {/* Tab bar */}
-          <div className="flex flex-wrap justify-center gap-3 mb-10">
+        {/* Vertical tabs on left + content panel on right */}
+        <div ref={contentRef} className="flex flex-col lg:flex-row gap-6">
+          {/* Vertical tab buttons — stacked on the left */}
+          <div className="flex lg:flex-col gap-3 lg:w-60 shrink-0">
             {tabs.map((tab, i) => {
               const TabIcon = tab.icon;
               return (
                 <button
                   key={tab.title}
                   onClick={() => setActiveTab(i)}
-                  className={`flex items-center gap-2 px-5 py-3 rounded-full text-sm font-semibold transition-all duration-300 ${
+                  className={`flex items-center gap-3 px-5 py-4 rounded-xl text-sm font-semibold text-left transition-all duration-300 w-full ${
                     i === activeTab
-                      ? "bg-brand text-cream shadow-lg shadow-brand/20"
+                      ? "text-cream shadow-lg shadow-brand/20"
                       : "bg-white/5 text-muted-foreground hover:bg-white/10 border border-white/10"
                   }`}
                   style={
@@ -136,44 +132,41 @@ export function ConversionSection() {
                       : undefined
                   }
                 >
-                  <TabIcon className="w-4 h-4" />
+                  <TabIcon className="w-5 h-5 shrink-0" />
                   {tab.title}
                 </button>
               );
             })}
           </div>
 
-          {/* Content panel */}
-          <div
-            ref={panelRef}
-            className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center"
-          >
-            {/* Text side */}
-            <div className="space-y-6">
-              <div className="w-14 h-14 rounded-2xl flex items-center justify-center bg-brand/20">
-                <Icon className="w-7 h-7 text-brand-light" />
+          {/* Content panel — expands left to right */}
+          <div ref={panelRef} className="flex-1 min-w-0">
+            <div className="space-y-6 mb-8">
+              <div className="flex items-center gap-4">
+                <div className="w-14 h-14 rounded-2xl flex items-center justify-center bg-brand/20 shrink-0">
+                  <Icon className="w-7 h-7 text-brand-light" />
+                </div>
+                <div>
+                  <h3 className="text-2xl md:text-3xl font-heading font-bold text-foreground">
+                    {current.title}
+                  </h3>
+                </div>
               </div>
-              <h3 className="text-2xl md:text-3xl font-heading font-bold text-foreground">
-                {current.title}
-              </h3>
-              <p className="text-base text-muted-foreground leading-relaxed">
+              <p className="text-base text-muted-foreground leading-relaxed max-w-xl">
                 {current.description}
               </p>
             </div>
 
-            {/* Screenshot side */}
-            <div>
-              <BrowserFrame url="outdoor-renovations.vercel.app">
-                <div className="aspect-video">
-                  <ScreenImage variant={current.screenshot} />
-                </div>
-              </BrowserFrame>
-            </div>
+            {/* Screenshot */}
+            <BrowserFrame url="outdoor-renovations.vercel.app">
+              <div className="aspect-video">
+                <ScreenImage variant={current.screenshot} />
+              </div>
+            </BrowserFrame>
           </div>
         </div>
       </div>
 
-      <div className="absolute bottom-0 left-0 right-0 gradient-divider" />
     </section>
   );
 }

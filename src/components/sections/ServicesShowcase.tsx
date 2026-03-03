@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { BrowserFrame, PhoneFrame } from "../ui/DeviceFrame";
@@ -36,6 +36,8 @@ export function ServicesShowcase() {
   const cardsRef = useRef<HTMLDivElement>(null);
   const phoneScreenRef = useRef<HTMLDivElement>(null);
   const cursorRef = useRef<HTMLDivElement>(null);
+  const typingRef = useRef<HTMLDivElement>(null);
+  const [typedText, setTypedText] = useState("");
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -102,8 +104,8 @@ export function ServicesShowcase() {
         }
       }
 
-      // Fake mouse cursor typing animation on the desktop browser
-      if (cursorRef.current) {
+      // Mouse cursor moves to Full Name field, clicks, then types "John Doe"
+      if (cursorRef.current && typingRef.current) {
         const tl = gsap.timeline({
           scrollTrigger: {
             trigger: devicesRef.current,
@@ -113,21 +115,39 @@ export function ServicesShowcase() {
           delay: 1.5,
         });
 
+        // Cursor enters from off-screen, moves to the Full Name form field
         tl.fromTo(
           cursorRef.current,
-          { opacity: 0, x: 200, y: 50 },
-          { opacity: 1, x: 120, y: 180, duration: 1.2, ease: "power2.inOut" }
+          { opacity: 0, left: "85%", top: "8%" },
+          { opacity: 1, left: "68%", top: "36%", duration: 1.2, ease: "power2.inOut" }
         )
+          // Click animation
           .to(cursorRef.current, {
             scale: 0.85,
-            duration: 0.15,
+            duration: 0.12,
             yoyo: true,
             repeat: 1,
           })
+          // Show typing overlay after click
+          .to(typingRef.current, { opacity: 1, duration: 0.1 })
+          // Type "John Doe" character by character
+          .to(
+            { length: 0 },
+            {
+              length: 8,
+              duration: 1.2,
+              ease: "steps(8)",
+              onUpdate: function () {
+                const len = Math.round(this.targets()[0].length);
+                setTypedText("John Doe".slice(0, len));
+              },
+            }
+          )
+          // Pause then fade out cursor and text
           .to(cursorRef.current, {
             opacity: 0,
             duration: 0.6,
-            delay: 0.5,
+            delay: 1,
           });
       }
 
@@ -155,7 +175,7 @@ export function ServicesShowcase() {
   return (
     <section
       ref={sectionRef}
-      className="relative py-24 md:py-32 px-6 md:px-12 lg:px-20 xl:px-32 section-glow"
+      className="relative py-24 md:py-32 px-6 md:px-12 lg:px-20 xl:px-32"
     >
       <div className="relative z-10 mx-auto w-full max-w-7xl">
         {/* Heading */}
@@ -184,11 +204,11 @@ export function ServicesShowcase() {
                 <ScreenImage variant="service-detail" />
               </div>
             </BrowserFrame>
-            {/* Fake mouse cursor */}
+            {/* Fake mouse cursor — positioned absolutely, GSAP animates left/top */}
             <div
               ref={cursorRef}
-              className="absolute pointer-events-none z-20 opacity-0"
-              style={{ top: 0, left: 0 }}
+              className="absolute pointer-events-none z-20"
+              style={{ top: "8%", left: "85%", opacity: 0 }}
             >
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
                 <path
@@ -199,6 +219,17 @@ export function ServicesShowcase() {
                   strokeLinejoin="round"
                 />
               </svg>
+            </div>
+            {/* Typing text overlay — appears where the Full Name field is */}
+            <div
+              ref={typingRef}
+              className="absolute pointer-events-none z-20"
+              style={{ top: "37%", left: "63%", opacity: 0 }}
+            >
+              <span className="text-[11px] font-sans text-gray-700 bg-white/90 px-1 rounded-sm">
+                {typedText}
+                <span className="animate-pulse">|</span>
+              </span>
             </div>
           </div>
 
@@ -233,7 +264,6 @@ export function ServicesShowcase() {
         </div>
       </div>
 
-      <div className="absolute bottom-0 left-0 right-0 gradient-divider" />
     </section>
   );
 }

@@ -52,8 +52,33 @@ body {
 }
 
 .gradient-divider {
-  height: 1px;
-  background: linear-gradient(90deg, transparent, #2D4A3E, #6B8F7B, transparent);
+  display: none; /* Removed for seamless single-scroll experience */
+}
+
+/* ─── Fixed Background Glow (Apple-style persistent bg) ── */
+
+.fixed-bg-glow {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 80% 60% at 50% 40%, rgba(45, 74, 62, 0.18) 0%, transparent 70%),
+    radial-gradient(ellipse 50% 40% at 30% 70%, rgba(107, 143, 123, 0.08) 0%, transparent 60%);
+}
+
+/* ─── Perpetual phone scroll ──────────────────── */
+
+@keyframes phone-scroll-loop {
+  0% { transform: translateY(0); }
+  45% { transform: translateY(-55%); }
+  50% { transform: translateY(-55%); }
+  95% { transform: translateY(0); }
+  100% { transform: translateY(0); }
+}
+
+.phone-scroll-anim img {
+  animation: phone-scroll-loop 12s ease-in-out infinite;
 }
 
 /* ─── Cards ────────────────────────────────────── */
@@ -298,16 +323,16 @@ body {
 .metric-card {
   text-align: center;
   padding: 24px;
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(107, 143, 123, 0.35);
+  background: rgba(45, 74, 62, 0.15);
+  border: 1px solid rgba(107, 143, 123, 0.5);
   border-radius: 12px;
-  box-shadow: 0 4px 24px rgba(45, 74, 62, 0.2), 0 0 0 1px rgba(107, 143, 123, 0.1);
+  box-shadow: 0 4px 24px rgba(45, 74, 62, 0.3), 0 0 0 1px rgba(107, 143, 123, 0.15);
   transition: all 0.3s ease;
 }
 
 .metric-card:hover {
-  border-color: rgba(107, 143, 123, 0.6);
-  box-shadow: 0 8px 32px rgba(45, 74, 62, 0.3), 0 0 0 1px rgba(107, 143, 123, 0.2);
+  border-color: rgba(107, 143, 123, 0.7);
+  box-shadow: 0 8px 32px rgba(45, 74, 62, 0.4), 0 0 0 1px rgba(107, 143, 123, 0.3);
   transform: translateY(-2px);
 }
 

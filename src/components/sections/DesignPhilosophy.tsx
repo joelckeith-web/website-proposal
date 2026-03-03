@@ -58,19 +58,19 @@ export function DesignPhilosophy() {
         },
       });
 
-      // Chain reaction: swatches animate left-to-right
+      // Chain reaction: slower animation with later trigger for noticeable reveal
       const swatches = paletteRef.current?.querySelectorAll(".palette-swatch");
       if (swatches) {
         gsap.from(swatches, {
-          y: 50,
+          y: 60,
           opacity: 0,
-          scale: 0.8,
-          duration: 0.6,
-          stagger: 0.12,
+          scale: 0.7,
+          duration: 1.2,
+          stagger: 0.3,
           ease: "back.out(1.4)",
           scrollTrigger: {
             trigger: paletteRef.current,
-            start: "top 90%",
+            start: "top 75%",
             toggleActions: "play none none none",
           },
         });
@@ -99,7 +99,7 @@ export function DesignPhilosophy() {
   return (
     <section
       ref={sectionRef}
-      className="relative py-24 md:py-32 px-6 md:px-12 lg:px-20 xl:px-32 section-glow"
+      className="relative py-24 md:py-32 px-6 md:px-12 lg:px-20 xl:px-32"
     >
       <div className="relative z-10 mx-auto w-full max-w-7xl">
         {/* Heading */}
@@ -174,7 +174,6 @@ export function DesignPhilosophy() {
         </div>
       </div>
 
-      <div className="absolute bottom-0 left-0 right-0 gradient-divider" />
     </section>
   );
 }
