@@ -58,17 +58,23 @@ export function DesignPhilosophy() {
         },
       });
 
-      gsap.from(paletteRef.current, {
-        y: 40,
-        opacity: 0,
-        duration: 0.8,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: paletteRef.current,
-          start: "top 90%",
-          toggleActions: "play none none none",
-        },
-      });
+      // Chain reaction: swatches animate left-to-right
+      const swatches = paletteRef.current?.querySelectorAll(".palette-swatch");
+      if (swatches) {
+        gsap.from(swatches, {
+          y: 50,
+          opacity: 0,
+          scale: 0.8,
+          duration: 0.6,
+          stagger: 0.12,
+          ease: "back.out(1.4)",
+          scrollTrigger: {
+            trigger: paletteRef.current,
+            start: "top 90%",
+            toggleActions: "play none none none",
+          },
+        });
+      }
 
       const cards = cardsRef.current?.children;
       if (cards) {
@@ -110,12 +116,12 @@ export function DesignPhilosophy() {
           </p>
         </div>
 
-        {/* Color Palette */}
-        <div ref={paletteRef} className="mb-12">
-          <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-4">
+        {/* Color Palette — large swatches with hex codes */}
+        <div ref={paletteRef} className="mb-16">
+          <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-6">
             Brand Palette
           </p>
-          <div className="flex gap-3 flex-wrap">
+          <div className="grid grid-cols-5 gap-4">
             {[
               { color: "#1B3128", label: "Dark Green" },
               { color: "#2D4A3E", label: "Primary" },
@@ -123,14 +129,22 @@ export function DesignPhilosophy() {
               { color: "#F0EBE3", label: "Cream" },
               { color: "#1A1A1A", label: "Charcoal" },
             ].map((swatch) => (
-              <div key={swatch.label} className="flex flex-col items-center gap-2">
+              <div
+                key={swatch.label}
+                className="palette-swatch flex flex-col items-center gap-3"
+              >
                 <div
-                  className="w-14 h-14 rounded-xl border border-white/10"
+                  className="w-full aspect-[3/2] rounded-2xl border border-white/10 transition-transform duration-300 hover:scale-105"
                   style={{ background: swatch.color }}
                 />
-                <span className="text-[10px] text-muted-foreground">
-                  {swatch.label}
-                </span>
+                <div className="text-center">
+                  <span className="block text-sm font-semibold text-foreground">
+                    {swatch.label}
+                  </span>
+                  <span className="block text-xs font-mono text-muted-foreground mt-0.5">
+                    {swatch.color}
+                  </span>
+                </div>
               </div>
             ))}
           </div>

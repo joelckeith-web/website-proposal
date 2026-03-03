@@ -39,10 +39,10 @@ interface PhoneFrameProps {
 export function PhoneFrame({ children, className = "" }: PhoneFrameProps) {
   return (
     <div className={`device-phone ${className}`}>
-      {/* Notch */}
+      {/* Dynamic Island (smaller, doesn't obscure content) */}
       <div
-        className="absolute top-[10px] left-1/2 -translate-x-1/2 z-10 w-[80px] h-[24px] rounded-b-xl"
-        style={{ background: "#1a1a1a" }}
+        className="absolute top-[14px] left-1/2 -translate-x-1/2 z-10 w-[40px] h-[12px] rounded-full"
+        style={{ background: "#000000" }}
       />
       <div className="screen">{children}</div>
     </div>

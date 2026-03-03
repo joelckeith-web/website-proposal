@@ -222,14 +222,33 @@ body {
   z-index: 10;
 }
 
-.annotation::before {
-  content: "";
-  position: absolute;
-  width: 8px;
-  height: 8px;
-  background: #6B8F7B;
+/* Ripple dot for annotations */
+.ripple-dot {
+  display: block;
+  width: 10px;
+  height: 10px;
+  background: #ffffff;
   border-radius: 50%;
-  box-shadow: 0 0 8px rgba(107, 143, 123, 0.6);
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.8);
+}
+
+.ripple-ping {
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  animation: ripple-expand 2s ease-out infinite;
+}
+
+@keyframes ripple-expand {
+  0% {
+    transform: scale(1);
+    opacity: 0.7;
+  }
+  100% {
+    transform: scale(2.5);
+    opacity: 0;
+  }
 }
 
 /* ─── Scroll Progress ──────────────────────────── */
@@ -279,9 +298,17 @@ body {
 .metric-card {
   text-align: center;
   padding: 24px;
-  background: rgba(255, 255, 255, 0.02);
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(107, 143, 123, 0.35);
   border-radius: 12px;
+  box-shadow: 0 4px 24px rgba(45, 74, 62, 0.2), 0 0 0 1px rgba(107, 143, 123, 0.1);
+  transition: all 0.3s ease;
+}
+
+.metric-card:hover {
+  border-color: rgba(107, 143, 123, 0.6);
+  box-shadow: 0 8px 32px rgba(45, 74, 62, 0.3), 0 0 0 1px rgba(107, 143, 123, 0.2);
+  transform: translateY(-2px);
 }
 
 .metric-value {

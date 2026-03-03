@@ -34,6 +34,8 @@ export function ServicesShowcase() {
   const headingRef = useRef<HTMLDivElement>(null);
   const devicesRef = useRef<HTMLDivElement>(null);
   const cardsRef = useRef<HTMLDivElement>(null);
+  const phoneScreenRef = useRef<HTMLDivElement>(null);
+  const cursorRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -83,6 +85,52 @@ export function ServicesShowcase() {
         });
       }
 
+      // Auto-scroll phone content
+      if (phoneScreenRef.current) {
+        const img = phoneScreenRef.current.querySelector("img");
+        if (img) {
+          gsap.to(img, {
+            yPercent: -30,
+            ease: "none",
+            scrollTrigger: {
+              trigger: devicesRef.current,
+              start: "top 60%",
+              end: "bottom 30%",
+              scrub: 2,
+            },
+          });
+        }
+      }
+
+      // Fake mouse cursor typing animation on the desktop browser
+      if (cursorRef.current) {
+        const tl = gsap.timeline({
+          scrollTrigger: {
+            trigger: devicesRef.current,
+            start: "top 70%",
+            toggleActions: "play none none none",
+          },
+          delay: 1.5,
+        });
+
+        tl.fromTo(
+          cursorRef.current,
+          { opacity: 0, x: 200, y: 50 },
+          { opacity: 1, x: 120, y: 180, duration: 1.2, ease: "power2.inOut" }
+        )
+          .to(cursorRef.current, {
+            scale: 0.85,
+            duration: 0.15,
+            yoyo: true,
+            repeat: 1,
+          })
+          .to(cursorRef.current, {
+            opacity: 0,
+            duration: 0.6,
+            delay: 0.5,
+          });
+      }
+
       // Service cards stagger
       const cards = cardsRef.current?.children;
       if (cards) {
@@ -124,21 +172,42 @@ export function ServicesShowcase() {
           </p>
         </div>
 
-        {/* Device preview: Laptop + Phone */}
+        {/* Device preview: Laptop + Phone — larger frames */}
         <div
           ref={devicesRef}
           className="flex flex-col lg:flex-row items-center justify-center gap-8 mb-16"
         >
-          <div className="laptop-wrapper w-full max-w-2xl">
+          {/* Larger laptop */}
+          <div className="laptop-wrapper w-full max-w-3xl relative">
             <BrowserFrame url="outdoor-renovations.vercel.app/services/landscape-design">
               <div className="aspect-video">
                 <ScreenImage variant="service-detail" />
               </div>
             </BrowserFrame>
+            {/* Fake mouse cursor */}
+            <div
+              ref={cursorRef}
+              className="absolute pointer-events-none z-20 opacity-0"
+              style={{ top: 0, left: 0 }}
+            >
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <path
+                  d="M5 3l14 8-6.5 2L9 19.5z"
+                  fill="white"
+                  stroke="black"
+                  strokeWidth="1.5"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </div>
           </div>
-          <div className="phone-wrapper w-[200px] shrink-0">
+
+          {/* Larger phone with auto-scroll */}
+          <div className="phone-wrapper w-[240px] shrink-0">
             <PhoneFrame>
-              <ScreenImage variant="mobile-services" />
+              <div ref={phoneScreenRef} className="overflow-hidden" style={{ height: "100%" }}>
+                <ScreenImage variant="mobile-services" />
+              </div>
             </PhoneFrame>
           </div>
         </div>

@@ -14,38 +14,49 @@ export function HeroSection() {
   const headingRef = useRef<HTMLDivElement>(null);
   const laptopRef = useRef<HTMLDivElement>(null);
   const badgeRef = useRef<HTMLDivElement>(null);
+  const perspectiveRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      // Heading entrance
-      gsap.from(headingRef.current, {
-        y: 60,
-        opacity: 0,
-        duration: 1.2,
-        ease: "power3.out",
-        delay: 0.3,
-      });
-
       // Badge entrance
       gsap.from(badgeRef.current, {
         y: 30,
         opacity: 0,
         duration: 1,
         ease: "power3.out",
-        delay: 0.6,
+        delay: 0.2,
       });
 
-      // Laptop rises on scroll
-      gsap.from(laptopRef.current, {
-        y: 200,
+      // Heading entrance
+      gsap.from(headingRef.current, {
+        y: 60,
         opacity: 0,
-        scale: 0.8,
-        duration: 1.4,
+        duration: 1.2,
         ease: "power3.out",
-        delay: 0.9,
+        delay: 0.4,
       });
 
-      // Parallax: laptop and heading move at different speeds on scroll
+      // Laptop 3D rotation: starts sideways (side profile) and spins to face viewer
+      gsap.fromTo(
+        laptopRef.current,
+        {
+          rotateY: -80,
+          opacity: 0,
+          scale: 0.85,
+          x: -100,
+        },
+        {
+          rotateY: 0,
+          opacity: 1,
+          scale: 1,
+          x: 0,
+          duration: 1.8,
+          ease: "power3.out",
+          delay: 0.7,
+        }
+      );
+
+      // Parallax on scroll
       gsap.to(headingRef.current, {
         y: -100,
         opacity: 0,
@@ -120,13 +131,15 @@ export function HeroSection() {
           </div>
         </div>
 
-        {/* Laptop mockup */}
-        <div ref={laptopRef} className="mt-12 w-full max-w-4xl px-4">
-          <LaptopFrame>
-            <div className="aspect-video relative">
-              <ScreenImage variant="hero" priority />
-            </div>
-          </LaptopFrame>
+        {/* 3D Perspective wrapper for laptop spin */}
+        <div ref={perspectiveRef} className="mt-12 w-full max-w-5xl px-4" style={{ perspective: "1200px" }}>
+          <div ref={laptopRef} style={{ transformStyle: "preserve-3d" }}>
+            <LaptopFrame>
+              <div className="aspect-video relative">
+                <ScreenImage variant="hero" priority />
+              </div>
+            </LaptopFrame>
+          </div>
         </div>
       </div>
 

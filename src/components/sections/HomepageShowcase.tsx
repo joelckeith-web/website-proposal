@@ -11,27 +11,21 @@ gsap.registerPlugin(ScrollTrigger);
 const annotations = [
   {
     label: "Video hero with trust signals",
-    position: { top: "12%", left: "-8%" },
-    dotPosition: { top: "-2px", right: "-12px" },
+    position: { top: "8%", left: "-10%" },
+    dotSide: "right" as const,
     delay: 0,
   },
   {
     label: "Click-to-call CTA",
-    position: { top: "25%", right: "-6%" },
-    dotPosition: { top: "-2px", left: "-12px" },
+    position: { top: "8%", right: "-10%" },
+    dotSide: "left" as const,
     delay: 0.2,
   },
   {
-    label: "200+ projects badge",
-    position: { top: "55%", left: "-8%" },
-    dotPosition: { top: "-2px", right: "-12px" },
+    label: "Immediate credibility metrics",
+    position: { bottom: "12%", left: "50%", transform: "translateX(-50%)" },
+    dotSide: "top" as const,
     delay: 0.4,
-  },
-  {
-    label: "Services carousel",
-    position: { bottom: "18%", right: "-6%" },
-    dotPosition: { top: "-2px", left: "-12px" },
-    delay: 0.6,
   },
 ];
 
@@ -114,28 +108,31 @@ export function HomepageShowcase() {
 
         {/* Browser with annotations */}
         <div className="relative max-w-5xl mx-auto">
-          {/* Annotations (desktop only) */}
-          {annotations.map((ann, i) => (
-            <div
-              key={ann.label}
-              ref={(el) => { annotationsRef.current[i] = el; }}
-              className="annotation hidden lg:block"
-              style={ann.position as React.CSSProperties}
-            >
-              <span
-                className="absolute"
-                style={{
-                  ...ann.dotPosition,
-                  width: "8px",
-                  height: "8px",
-                  background: "#6B8F7B",
-                  borderRadius: "50%",
-                  boxShadow: "0 0 8px rgba(107, 143, 123, 0.6)",
-                }}
-              />
-              {ann.label}
-            </div>
-          ))}
+          {/* Annotations with ripple dots (desktop only) */}
+          {annotations.map((ann, i) => {
+            const dotPos =
+              ann.dotSide === "right"
+                ? { top: "50%", right: "-16px", transform: "translateY(-50%)" }
+                : ann.dotSide === "left"
+                  ? { top: "50%", left: "-16px", transform: "translateY(-50%)" }
+                  : { top: "-16px", left: "50%", transform: "translateX(-50%)" };
+
+            return (
+              <div
+                key={ann.label}
+                ref={(el) => { annotationsRef.current[i] = el; }}
+                className="annotation hidden lg:block"
+                style={ann.position as React.CSSProperties}
+              >
+                {/* Ripple ping dot */}
+                <span className="absolute" style={dotPos as React.CSSProperties}>
+                  <span className="ripple-dot" />
+                  <span className="ripple-ping" />
+                </span>
+                {ann.label}
+              </div>
+            );
+          })}
 
           {/* Browser frame */}
           <div ref={browserRef}>

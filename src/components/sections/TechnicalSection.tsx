@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import {
@@ -54,16 +54,84 @@ const techFeatures = [
 ];
 
 const performanceMetrics = [
-  { label: "Performance", value: 95, color: "#2D4A3E" },
-  { label: "Accessibility", value: 98, color: "#6B8F7B" },
-  { label: "Best Practices", value: 100, color: "#4CC9F0" },
   { label: "SEO", value: 100, color: "#F0EBE3" },
+  { label: "Best Practices", value: 100, color: "#4CC9F0" },
+  { label: "Accessibility", value: 98, color: "#6B8F7B" },
+  { label: "Performance", value: 95, color: "#2D4A3E" },
 ];
+
+function AnimatedRing({ label, value, color }: { label: string; value: number; color: string }) {
+  const [displayValue, setDisplayValue] = useState(0);
+  const ringRef = useRef<HTMLDivElement>(null);
+  const hasAnimated = useRef(false);
+
+  const startAnimation = useCallback(() => {
+    if (hasAnimated.current) return;
+    hasAnimated.current = true;
+
+    // Animate the number count-up
+    const counter = { val: 0 };
+    gsap.to(counter, {
+      val: value,
+      duration: 1.5,
+      ease: "power2.out",
+      onUpdate: () => setDisplayValue(Math.round(counter.val)),
+    });
+
+    // Animate the conic-gradient fill
+    if (ringRef.current) {
+      gsap.fromTo(
+        ringRef.current,
+        { "--ring-pct": "0" },
+        {
+          "--ring-pct": String(value),
+          duration: 1.5,
+          ease: "power2.out",
+        }
+      );
+    }
+  }, [value]);
+
+  useEffect(() => {
+    if (!ringRef.current) return;
+
+    const trigger = ScrollTrigger.create({
+      trigger: ringRef.current,
+      start: "top 92%",
+      onEnter: startAnimation,
+    });
+
+    return () => trigger.kill();
+  }, [startAnimation]);
+
+  return (
+    <div className="metric-ring flex flex-col items-center">
+      <div
+        ref={ringRef}
+        className="relative w-32 h-32 md:w-40 md:h-40 rounded-full flex items-center justify-center mb-4"
+        style={
+          {
+            "--ring-pct": "0",
+            background: `conic-gradient(${color} calc(var(--ring-pct) * 1%), rgba(255,255,255,0.06) calc(var(--ring-pct) * 1%))`,
+          } as React.CSSProperties
+        }
+      >
+        <div className="w-[calc(100%-12px)] h-[calc(100%-12px)] rounded-full bg-background flex items-center justify-center">
+          <span className="text-3xl md:text-4xl font-black" style={{ color }}>
+            {displayValue}
+          </span>
+        </div>
+      </div>
+      <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+        {label}
+      </span>
+    </div>
+  );
+}
 
 export function TechnicalSection() {
   const sectionRef = useRef<HTMLElement>(null);
   const headingRef = useRef<HTMLDivElement>(null);
-  const metricsRef = useRef<HTMLDivElement>(null);
   const featuresRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -79,25 +147,6 @@ export function TechnicalSection() {
           toggleActions: "play none none none",
         },
       });
-
-      // Metrics animate in with counter effect
-      const metrics = metricsRef.current?.querySelectorAll(".metric-ring");
-      if (metrics) {
-        metrics.forEach((metric, i) => {
-          gsap.from(metric, {
-            scale: 0.5,
-            opacity: 0,
-            duration: 0.8,
-            delay: i * 0.15,
-            ease: "back.out(1.7)",
-            scrollTrigger: {
-              trigger: metricsRef.current,
-              start: "top 92%",
-              toggleActions: "play none none none",
-            },
-          });
-        });
-      }
 
       // Feature cards stagger
       const features = featuresRef.current?.children;
@@ -140,29 +189,10 @@ export function TechnicalSection() {
           </p>
         </div>
 
-        {/* Lighthouse Metrics */}
-        <div
-          ref={metricsRef}
-          className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-16"
-        >
+        {/* Lighthouse Metrics — larger rings with count-up */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-16">
           {performanceMetrics.map(({ label, value, color }) => (
-            <div key={label} className="metric-ring flex flex-col items-center">
-              <div
-                className="relative w-24 h-24 rounded-full flex items-center justify-center mb-3"
-                style={{
-                  background: `conic-gradient(${color} ${value}%, rgba(255,255,255,0.06) ${value}%)`,
-                }}
-              >
-                <div className="w-20 h-20 rounded-full bg-background flex items-center justify-center">
-                  <span className="text-2xl font-black" style={{ color }}>
-                    {value}
-                  </span>
-                </div>
-              </div>
-              <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
-                {label}
-              </span>
-            </div>
+            <AnimatedRing key={label} label={label} value={value} color={color} />
           ))}
         </div>
 

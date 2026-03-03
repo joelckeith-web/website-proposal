@@ -1,45 +1,55 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { BrowserFrame } from "../ui/DeviceFrame";
 import { ScreenImage } from "../ui/ScreenImage";
-import { Phone, MousePointerClick, FileText, MapPin, ArrowRight } from "lucide-react";
+import { Phone, MousePointerClick, FileText, MapPin } from "lucide-react";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const conversionPoints = [
+const tabs = [
   {
     icon: Phone,
-    title: "Click-to-Call on Every Page",
-    description: "Sticky header with phone number. One tap to connect.",
+    title: "Click-to-Call",
+    description:
+      "Sticky header with phone number on every page. One tap from any screen to connect directly with the business.",
+    screenshot: "hero" as const,
+    highlight: "top-right",
   },
   {
     icon: MousePointerClick,
-    title: "Strategic CTA Placement",
+    title: "Strategic CTAs",
     description:
-      "\"Get a Consultation\" buttons placed at every natural decision point.",
+      '"Get a Consultation" buttons placed at every natural decision point throughout the site. Above the fold, after services, below reviews.',
+    screenshot: "contact-cta" as const,
+    highlight: "center",
   },
   {
     icon: FileText,
     title: "Smart Contact Forms",
     description:
-      "React Hook Form with validation, designed for quick mobile completion.",
+      "React Hook Form with field validation, designed for quick mobile completion. Name, phone, service type — three fields to a lead.",
+    screenshot: "contact" as const,
+    highlight: "center",
   },
   {
     icon: MapPin,
     title: "10+ Location Pages",
     description:
-      "City-specific landing pages targeting local search intent across Austin metro.",
+      "City-specific landing pages targeting local search intent across the Austin metro area. Each page is SEO-optimized for that city.",
+    screenshot: "services" as const,
+    highlight: "full",
   },
 ];
 
 export function ConversionSection() {
   const sectionRef = useRef<HTMLElement>(null);
   const headingRef = useRef<HTMLDivElement>(null);
-  const browserRef = useRef<HTMLDivElement>(null);
-  const pointsRef = useRef<HTMLDivElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
+  const [activeTab, setActiveTab] = useState(0);
+  const panelRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -55,37 +65,35 @@ export function ConversionSection() {
         },
       });
 
-      gsap.from(browserRef.current, {
+      gsap.from(contentRef.current, {
         y: 80,
         opacity: 0,
         duration: 1.2,
         ease: "power3.out",
         scrollTrigger: {
-          trigger: browserRef.current,
+          trigger: contentRef.current,
           start: "top 92%",
           toggleActions: "play none none none",
         },
       });
-
-      const points = pointsRef.current?.children;
-      if (points) {
-        gsap.from(points, {
-          x: -60,
-          opacity: 0,
-          duration: 0.8,
-          stagger: 0.15,
-          ease: "power3.out",
-          scrollTrigger: {
-            trigger: pointsRef.current,
-            start: "top 92%",
-            toggleActions: "play none none none",
-          },
-        });
-      }
     }, sectionRef);
 
     return () => ctx.revert();
   }, []);
+
+  // Animate panel on tab change
+  useEffect(() => {
+    if (panelRef.current) {
+      gsap.fromTo(
+        panelRef.current,
+        { opacity: 0, y: 20 },
+        { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" }
+      );
+    }
+  }, [activeTab]);
+
+  const current = tabs[activeTab];
+  const Icon = current.icon;
 
   return (
     <section
@@ -107,38 +115,60 @@ export function ConversionSection() {
           </p>
         </div>
 
-        {/* Two column layout */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          {/* Conversion points */}
-          <div ref={pointsRef} className="space-y-6">
-            {conversionPoints.map(({ icon: Icon, title, description }) => (
-              <div
-                key={title}
-                className="flex items-start gap-4 group"
-              >
-                <div className="w-12 h-12 rounded-lg flex items-center justify-center shrink-0 bg-brand/20 group-hover:bg-brand/30 transition-colors">
-                  <Icon className="w-6 h-6 text-brand-light" />
-                </div>
-                <div>
-                  <h3 className="text-base font-bold text-foreground flex items-center gap-2">
-                    {title}
-                    <ArrowRight className="w-4 h-4 text-brand-light opacity-0 group-hover:opacity-100 transition-opacity" />
-                  </h3>
-                  <p className="text-sm text-muted-foreground mt-1 leading-relaxed">
-                    {description}
-                  </p>
-                </div>
-              </div>
-            ))}
+        {/* Apple-style tabs + content panel */}
+        <div ref={contentRef}>
+          {/* Tab bar */}
+          <div className="flex flex-wrap justify-center gap-3 mb-10">
+            {tabs.map((tab, i) => {
+              const TabIcon = tab.icon;
+              return (
+                <button
+                  key={tab.title}
+                  onClick={() => setActiveTab(i)}
+                  className={`flex items-center gap-2 px-5 py-3 rounded-full text-sm font-semibold transition-all duration-300 ${
+                    i === activeTab
+                      ? "bg-brand text-cream shadow-lg shadow-brand/20"
+                      : "bg-white/5 text-muted-foreground hover:bg-white/10 border border-white/10"
+                  }`}
+                  style={
+                    i === activeTab
+                      ? { background: "linear-gradient(135deg, #2D4A3E, #6B8F7B)" }
+                      : undefined
+                  }
+                >
+                  <TabIcon className="w-4 h-4" />
+                  {tab.title}
+                </button>
+              );
+            })}
           </div>
 
-          {/* Browser showing contact page */}
-          <div ref={browserRef}>
-            <BrowserFrame url="outdoor-renovations.vercel.app/contact">
-              <div className="aspect-video">
-                <ScreenImage variant="contact" />
+          {/* Content panel */}
+          <div
+            ref={panelRef}
+            className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center"
+          >
+            {/* Text side */}
+            <div className="space-y-6">
+              <div className="w-14 h-14 rounded-2xl flex items-center justify-center bg-brand/20">
+                <Icon className="w-7 h-7 text-brand-light" />
               </div>
-            </BrowserFrame>
+              <h3 className="text-2xl md:text-3xl font-heading font-bold text-foreground">
+                {current.title}
+              </h3>
+              <p className="text-base text-muted-foreground leading-relaxed">
+                {current.description}
+              </p>
+            </div>
+
+            {/* Screenshot side */}
+            <div>
+              <BrowserFrame url="outdoor-renovations.vercel.app">
+                <div className="aspect-video">
+                  <ScreenImage variant={current.screenshot} />
+                </div>
+              </BrowserFrame>
+            </div>
           </div>
         </div>
       </div>

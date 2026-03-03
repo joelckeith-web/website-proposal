@@ -47,6 +47,7 @@ export function TrustSection() {
   const headingRef = useRef<HTMLDivElement>(null);
   const browserRef = useRef<HTMLDivElement>(null);
   const featuresRef = useRef<HTMLDivElement>(null);
+  const reviewsImgRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -74,6 +75,23 @@ export function TrustSection() {
           toggleActions: "play none none none",
         },
       });
+
+      // Scroll the reviews image horizontally to simulate carousel
+      if (reviewsImgRef.current) {
+        const img = reviewsImgRef.current.querySelector("img");
+        if (img) {
+          gsap.to(img, {
+            xPercent: -10,
+            ease: "none",
+            scrollTrigger: {
+              trigger: browserRef.current,
+              start: "top 60%",
+              end: "bottom 20%",
+              scrub: 2,
+            },
+          });
+        }
+      }
 
       const features = featuresRef.current?.children;
       if (features) {
@@ -115,33 +133,30 @@ export function TrustSection() {
           </p>
         </div>
 
-        {/* Two column: Browser + Features */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-          {/* Browser showing reviews */}
-          <div ref={browserRef}>
-            <BrowserFrame url="outdoor-renovations.vercel.app/#reviews">
-              <div className="aspect-video">
-                <ScreenImage variant="reviews" />
-              </div>
-            </BrowserFrame>
-          </div>
+        {/* Bigger browser screenshot on top */}
+        <div ref={browserRef} className="mb-12 max-w-5xl mx-auto">
+          <BrowserFrame url="outdoor-renovations.vercel.app/#reviews">
+            <div className="aspect-video overflow-hidden" ref={reviewsImgRef}>
+              <ScreenImage variant="reviews" />
+            </div>
+          </BrowserFrame>
+        </div>
 
-          {/* Trust features */}
-          <div ref={featuresRef} className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {trustFeatures.map(({ icon: Icon, title, description }) => (
-              <div key={title} className="card-showcase p-5">
-                <div className="w-10 h-10 rounded-lg flex items-center justify-center mb-3 bg-brand/20">
-                  <Icon className="w-5 h-5 text-brand-light" />
-                </div>
-                <h3 className="text-sm font-bold text-foreground mb-1">
-                  {title}
-                </h3>
-                <p className="text-xs text-muted-foreground leading-relaxed">
-                  {description}
-                </p>
+        {/* Trust features grid below */}
+        <div ref={featuresRef} className="grid grid-cols-2 md:grid-cols-3 gap-4">
+          {trustFeatures.map(({ icon: Icon, title, description }) => (
+            <div key={title} className="card-showcase p-5">
+              <div className="w-10 h-10 rounded-lg flex items-center justify-center mb-3 bg-brand/20">
+                <Icon className="w-5 h-5 text-brand-light" />
               </div>
-            ))}
-          </div>
+              <h3 className="text-sm font-bold text-foreground mb-1">
+                {title}
+              </h3>
+              <p className="text-xs text-muted-foreground leading-relaxed">
+                {description}
+              </p>
+            </div>
+          ))}
         </div>
       </div>
 

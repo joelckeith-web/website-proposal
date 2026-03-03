@@ -85,7 +85,7 @@ export function ClosingSection() {
         }}
       />
 
-      <div className="relative z-10 mx-auto w-full max-w-4xl text-center">
+      <div className="relative z-10 mx-auto w-full max-w-5xl text-center">
         {/* Heading */}
         <div ref={headingRef} className="mb-12">
           <span className="eyebrow mb-4 block">What&apos;s Included</span>
@@ -103,17 +103,17 @@ export function ClosingSection() {
         {/* Deliverables list */}
         <div
           ref={listRef}
-          className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-left max-w-2xl mx-auto mb-16"
+          className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-left max-w-4xl mx-auto mb-16"
         >
           {deliverables.map((item) => (
             <div
               key={item}
-              className="flex items-center gap-3 py-2 px-3 rounded-lg"
+              className="flex items-center gap-4 py-3 px-5 rounded-xl bg-white/[0.03] border border-white/[0.06]"
             >
-              <div className="w-5 h-5 rounded-full flex items-center justify-center shrink-0 bg-brand/30">
-                <Check className="w-3 h-3 text-brand-light" />
+              <div className="w-7 h-7 rounded-full flex items-center justify-center shrink-0 bg-brand/30">
+                <Check className="w-4 h-4 text-brand-light" />
               </div>
-              <span className="text-sm text-foreground">{item}</span>
+              <span className="text-base font-medium text-foreground">{item}</span>
             </div>
           ))}
         </div>
