@@ -147,7 +147,7 @@ export function MobileExperience() {
                     <div className="phone-scroll-anim" style={{ height: "100%", overflow: "hidden" }}>
                       {/* eslint-disable @next/next/no-img-element */}
                       <img
-                        src="/screenshots/mobile-service-detail.png"
+                        src="/screenshots/mobile-service-detail-full.png"
                         alt="Mobile service detail - scrolling"
                         className="w-full"
                         loading="lazy"

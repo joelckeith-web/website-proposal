@@ -75,22 +75,7 @@ export function TrustSection() {
         },
       });
 
-      // Scroll the reviews image VERTICALLY to simulate the reviews carousel scrolling
-      if (reviewsImgRef.current) {
-        const img = reviewsImgRef.current.querySelector("img");
-        if (img) {
-          gsap.to(img, {
-            yPercent: -25,
-            ease: "none",
-            scrollTrigger: {
-              trigger: browserRef.current,
-              start: "top 60%",
-              end: "bottom 20%",
-              scrub: 2,
-            },
-          });
-        }
-      }
+      // Reviews carousel: the CSS animation handles horizontal cycling automatically
 
       const features = featuresRef.current?.children;
       if (features) {
@@ -115,7 +100,7 @@ export function TrustSection() {
   return (
     <section
       ref={sectionRef}
-      className="relative py-24 md:py-32 px-6 md:px-12 lg:px-20 xl:px-32"
+      className="relative pt-24 md:pt-32 pb-12 md:pb-16 px-6 md:px-12 lg:px-20 xl:px-32"
     >
       <div className="relative z-10 mx-auto w-full max-w-7xl">
         {/* Heading */}
@@ -135,14 +120,16 @@ export function TrustSection() {
         {/* Bigger browser screenshot on top */}
         <div ref={browserRef} className="mb-12 max-w-5xl mx-auto">
           <BrowserFrame url="outdoor-renovations.vercel.app/#reviews">
-            <div className="aspect-video overflow-hidden" ref={reviewsImgRef}>
+            <div className="aspect-video overflow-hidden flex items-center" ref={reviewsImgRef}>
               {/* eslint-disable @next/next/no-img-element */}
-              <img
-                src="/screenshots/homepage-reviews.png"
-                alt="Outdoor Renovations client testimonials carousel"
-                className="w-full"
-                loading="lazy"
-              />
+              <div className="carousel-scroll-anim" style={{ width: "140%", maxWidth: "none", flexShrink: 0 }}>
+                <img
+                  src="/screenshots/homepage-reviews-focused.png"
+                  alt="Outdoor Renovations client testimonials carousel"
+                  className="w-full"
+                  loading="lazy"
+                />
+              </div>
             </div>
           </BrowserFrame>
         </div>

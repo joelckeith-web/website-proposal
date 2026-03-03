@@ -119,7 +119,7 @@ export function ServicesShowcase() {
         tl.fromTo(
           cursorRef.current,
           { opacity: 0, left: "85%", top: "8%" },
-          { opacity: 1, left: "68%", top: "36%", duration: 1.2, ease: "power2.inOut" }
+          { opacity: 1, left: "74%", top: "48%", duration: 1.2, ease: "power2.inOut" }
         )
           // Click animation
           .to(cursorRef.current, {
@@ -224,7 +224,7 @@ export function ServicesShowcase() {
             <div
               ref={typingRef}
               className="absolute pointer-events-none z-20"
-              style={{ top: "37%", left: "63%", opacity: 0 }}
+              style={{ top: "49%", left: "66%", opacity: 0 }}
             >
               <span className="text-[11px] font-sans text-gray-700 bg-white/90 px-1 rounded-sm">
                 {typedText}
@@ -237,7 +237,13 @@ export function ServicesShowcase() {
           <div className="phone-wrapper w-[240px] shrink-0">
             <PhoneFrame>
               <div ref={phoneScreenRef} className="overflow-hidden" style={{ height: "100%" }}>
-                <ScreenImage variant="mobile-services" />
+                {/* eslint-disable @next/next/no-img-element */}
+                <img
+                  src="/screenshots/mobile-homepage-full.png"
+                  alt="Mobile homepage - scrolling"
+                  className="w-full"
+                  loading="lazy"
+                />
               </div>
             </PhoneFrame>
           </div>

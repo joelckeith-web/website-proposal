@@ -81,6 +81,53 @@ body {
   animation: phone-scroll-loop 12s ease-in-out infinite;
 }
 
+/* ─── Ken Burns (Hero Screenshot) ─────────────── */
+
+@keyframes ken-burns {
+  0% { transform: scale(1) translate(0, 0); }
+  33% { transform: scale(1.08) translate(-1.5%, -1%); }
+  66% { transform: scale(1.05) translate(1%, -0.5%); }
+  100% { transform: scale(1) translate(0, 0); }
+}
+
+.ken-burns-anim {
+  animation: ken-burns 20s ease-in-out infinite;
+}
+
+/* ─── Highlight Pulse (Conversion Overlays) ───── */
+
+@keyframes highlight-glow {
+  0%, 100% {
+    opacity: 0.7;
+    box-shadow: 0 0 15px rgba(76, 201, 240, 0.25), inset 0 0 10px rgba(76, 201, 240, 0.03);
+  }
+  50% {
+    opacity: 1;
+    box-shadow: 0 0 30px rgba(76, 201, 240, 0.4), 0 0 60px rgba(76, 201, 240, 0.1), inset 0 0 20px rgba(76, 201, 240, 0.05);
+  }
+}
+
+.highlight-pulse {
+  border: 2px solid rgba(76, 201, 240, 0.7);
+  border-radius: 8px;
+  background: rgba(76, 201, 240, 0.08);
+  animation: highlight-glow 2s ease-in-out infinite;
+}
+
+/* ─── Reviews Carousel Scroll ─────────────────── */
+
+@keyframes carousel-scroll {
+  0% { transform: translateX(5%); }
+  45% { transform: translateX(-15%); }
+  50% { transform: translateX(-15%); }
+  95% { transform: translateX(5%); }
+  100% { transform: translateX(5%); }
+}
+
+.carousel-scroll-anim {
+  animation: carousel-scroll 10s ease-in-out infinite;
+}
+
 /* ─── Cards ────────────────────────────────────── */
 
 .card-showcase {

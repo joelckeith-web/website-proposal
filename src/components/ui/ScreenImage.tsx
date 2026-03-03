@@ -49,6 +49,14 @@ const screenshotMap: Record<string, { src: string; alt: string }> = {
     src: "/screenshots/location-page.png",
     alt: "Outdoor Renovations Austin location page with local SEO content",
   },
+  "homepage-cta-section": {
+    src: "/screenshots/homepage-cta-section.png",
+    alt: "Outdoor Renovations homepage call-to-action section",
+  },
+  "homepage-reviews-focused": {
+    src: "/screenshots/homepage-reviews-focused.png",
+    alt: "Outdoor Renovations client reviews carousel focused view",
+  },
 };
 
 interface ScreenImageProps {

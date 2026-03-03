@@ -74,7 +74,7 @@ export function ClosingSection() {
   return (
     <section
       ref={sectionRef}
-      className="relative py-24 md:py-32 px-6 md:px-12 lg:px-20 xl:px-32"
+      className="relative pt-12 md:pt-16 pb-24 md:pb-32 px-6 md:px-12 lg:px-20 xl:px-32"
     >
       {/* Background glow */}
       <div

@@ -16,13 +16,19 @@ const tabs = [
     description:
       "Sticky header with phone number on every page. One tap from any screen to connect directly with the business.",
     screenshot: "hero" as const,
+    highlights: [
+      { top: "1%", right: "3%", width: "20%", height: "6%" },
+    ],
   },
   {
     icon: MousePointerClick,
     title: "Strategic CTAs",
     description:
       '"Get a Consultation" buttons placed at every natural decision point throughout the site. Above the fold, after services, below reviews.',
-    screenshot: "contact-cta" as const,
+    screenshot: "homepage-cta-section" as const,
+    highlights: [
+      { top: "38%", left: "28%", width: "44%", height: "14%" },
+    ],
   },
   {
     icon: FileText,
@@ -30,6 +36,9 @@ const tabs = [
     description:
       "React Hook Form with field validation, designed for quick mobile completion. Name, phone, service type — three fields to a lead.",
     screenshot: "service-detail" as const,
+    highlights: [
+      { top: "28%", right: "3%", width: "35%", height: "55%" },
+    ],
   },
   {
     icon: MapPin,
@@ -37,6 +46,9 @@ const tabs = [
     description:
       "City-specific landing pages targeting local search intent across the Austin metro area. Each page is SEO-optimized for that city.",
     screenshot: "location-page" as const,
+    highlights: [
+      { top: "12%", left: "3%", width: "55%", height: "12%" },
+    ],
   },
 ];
 
@@ -94,7 +106,7 @@ export function ConversionSection() {
   return (
     <section
       ref={sectionRef}
-      className="relative py-24 md:py-32 px-6 md:px-12 lg:px-20 xl:px-32"
+      className="relative pt-12 md:pt-16 pb-24 md:pb-32 px-6 md:px-12 lg:px-20 xl:px-32"
     >
       <div className="relative z-10 mx-auto w-full max-w-7xl">
         {/* Heading */}
@@ -157,10 +169,23 @@ export function ConversionSection() {
               </p>
             </div>
 
-            {/* Screenshot */}
+            {/* Screenshot with highlight overlays */}
             <BrowserFrame url="outdoor-renovations.vercel.app">
-              <div className="aspect-video">
+              <div className="aspect-video relative">
                 <ScreenImage variant={current.screenshot} />
+                {current.highlights?.map((h, i) => (
+                  <div
+                    key={i}
+                    className="absolute highlight-pulse pointer-events-none"
+                    style={{
+                      top: h.top,
+                      left: (h as Record<string, string>).left,
+                      right: (h as Record<string, string>).right,
+                      width: h.width,
+                      height: h.height,
+                    }}
+                  />
+                ))}
               </div>
             </BrowserFrame>
           </div>

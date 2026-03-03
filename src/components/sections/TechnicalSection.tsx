@@ -54,13 +54,13 @@ const techFeatures = [
 ];
 
 const performanceMetrics = [
-  { label: "SEO", value: 100, color: "#F0EBE3" },
-  { label: "Best Practices", value: 100, color: "#4CC9F0" },
-  { label: "Accessibility", value: 98, color: "#6B8F7B" },
-  { label: "Performance", value: 95, color: "#2D4A3E" },
+  { label: "SEO", value: 100 },
+  { label: "Best Practices", value: 100 },
+  { label: "Accessibility", value: 98 },
+  { label: "Performance", value: 95 },
 ];
 
-function AnimatedRing({ label, value, color }: { label: string; value: number; color: string }) {
+function AnimatedRing({ label, value }: { label: string; value: number }) {
   const [displayValue, setDisplayValue] = useState(0);
   const ringRef = useRef<HTMLDivElement>(null);
   const hasAnimated = useRef(false);
@@ -112,7 +112,7 @@ function AnimatedRing({ label, value, color }: { label: string; value: number; c
         style={
           {
             "--ring-pct": "0",
-            background: `conic-gradient(${color} calc(var(--ring-pct) * 1%), rgba(255,255,255,0.06) calc(var(--ring-pct) * 1%))`,
+            background: `conic-gradient(from 0deg, #2D4A3E 0%, #6B8F7B calc(var(--ring-pct) * 0.5%), #4CC9F0 calc(var(--ring-pct) * 1%), rgba(255,255,255,0.06) calc(var(--ring-pct) * 1%))`,
           } as React.CSSProperties
         }
       >
@@ -180,7 +180,7 @@ export function TechnicalSection() {
   return (
     <section
       ref={sectionRef}
-      className="relative py-24 md:py-32 px-6 md:px-12 lg:px-20 xl:px-32"
+      className="relative pt-24 md:pt-32 pb-12 md:pb-16 px-6 md:px-12 lg:px-20 xl:px-32"
     >
       <div className="relative z-10 mx-auto w-full max-w-7xl">
         {/* Heading */}
@@ -199,8 +199,8 @@ export function TechnicalSection() {
 
         {/* Lighthouse Metrics — larger rings with count-up */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-16">
-          {performanceMetrics.map(({ label, value, color }) => (
-            <AnimatedRing key={label} label={label} value={value} color={color} />
+          {performanceMetrics.map(({ label, value }) => (
+            <AnimatedRing key={label} label={label} value={value} />
           ))}
         </div>
 

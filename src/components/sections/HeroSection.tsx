@@ -125,8 +125,10 @@ export function HeroSection() {
         <div ref={perspectiveRef} className="mt-12 w-full max-w-5xl px-4" style={{ perspective: "1200px" }}>
           <div ref={laptopRef} style={{ transformStyle: "preserve-3d" }}>
             <LaptopFrame>
-              <div className="aspect-video relative">
-                <ScreenImage variant="hero" priority />
+              <div className="aspect-video relative overflow-hidden">
+                <div className="ken-burns-anim w-full h-full">
+                  <ScreenImage variant="hero" priority />
+                </div>
               </div>
             </LaptopFrame>
           </div>
