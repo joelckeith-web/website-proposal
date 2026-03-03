@@ -1,0 +1,305 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ─── Base ─────────────────────────────────────── */
+
+html {
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+}
+
+body {
+  background: #000000;
+  color: #f5f5f5;
+  overflow-x: hidden;
+}
+
+::selection {
+  background: rgba(76, 201, 240, 0.3);
+  color: #ffffff;
+}
+
+/* ─── Typography ───────────────────────────────── */
+
+.text-gradient {
+  background: linear-gradient(135deg, #2D4A3E 0%, #6B8F7B 50%, #4CC9F0 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.text-gradient-accent {
+  background: linear-gradient(90deg, #4CC9F0 0%, #9F4CFF 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.text-gradient-brand {
+  background: linear-gradient(135deg, #6B8F7B 0%, #F0EBE3 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ─── Decorative Lines ─────────────────────────── */
+
+.line-accent {
+  width: 60px;
+  height: 2px;
+  background: linear-gradient(90deg, #2D4A3E, #6B8F7B, #4CC9F0);
+}
+
+.gradient-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #2D4A3E, #6B8F7B, transparent);
+}
+
+/* ─── Cards ────────────────────────────────────── */
+
+.card-showcase {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(45, 74, 62, 0.2);
+  border-radius: 0.75rem;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.card-showcase:hover {
+  border-color: rgba(107, 143, 123, 0.4);
+  transform: translateY(-3px);
+  box-shadow: 0 12px 40px rgba(45, 74, 62, 0.15);
+}
+
+/* ─── Device Frames ────────────────────────────── */
+
+.device-laptop {
+  position: relative;
+  border-radius: 12px;
+  background: #1a1a1a;
+  padding: 12px 12px 0 12px;
+  box-shadow:
+    0 25px 80px rgba(0, 0, 0, 0.5),
+    0 0 0 1px rgba(255, 255, 255, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.device-laptop::after {
+  content: "";
+  display: block;
+  height: 20px;
+  background: linear-gradient(to bottom, #1a1a1a, #111111);
+  border-radius: 0 0 12px 12px;
+  margin: 0 -12px;
+}
+
+.device-laptop .screen {
+  border-radius: 4px;
+  overflow: hidden;
+  background: #0d0d0d;
+  aspect-ratio: 16 / 10;
+}
+
+.device-phone {
+  position: relative;
+  border-radius: 32px;
+  background: #1a1a1a;
+  padding: 10px;
+  box-shadow:
+    0 25px 60px rgba(0, 0, 0, 0.5),
+    0 0 0 1px rgba(255, 255, 255, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.device-phone .screen {
+  border-radius: 24px;
+  overflow: hidden;
+  background: #0d0d0d;
+  aspect-ratio: 9 / 19.5;
+}
+
+/* ─── Browser Chrome ───────────────────────────── */
+
+.browser-chrome {
+  background: #1a1a1a;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow:
+    0 25px 80px rgba(0, 0, 0, 0.5),
+    0 0 0 1px rgba(255, 255, 255, 0.08);
+}
+
+.browser-chrome .browser-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+  background: #222222;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.browser-chrome .browser-dots {
+  display: flex;
+  gap: 6px;
+}
+
+.browser-chrome .browser-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.browser-chrome .browser-url {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 6px;
+  padding: 6px 12px;
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.4);
+  font-family: var(--font-poppins), sans-serif;
+}
+
+.browser-chrome .browser-content {
+  position: relative;
+  overflow: hidden;
+}
+
+/* ─── Glow Effects ─────────────────────────────── */
+
+.glow-brand {
+  box-shadow:
+    0 0 40px rgba(45, 74, 62, 0.15),
+    0 0 80px rgba(107, 143, 123, 0.05);
+}
+
+.glow-accent {
+  box-shadow:
+    0 0 40px rgba(76, 201, 240, 0.1),
+    0 0 80px rgba(159, 76, 255, 0.05);
+}
+
+/* ─── Section Backgrounds ──────────────────────── */
+
+.section-glow::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(45, 74, 62, 0.15) 0%,
+    transparent 70%
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ─── Dot Pattern ──────────────────────────────── */
+
+.dot-pattern {
+  background-image: radial-gradient(
+    circle at 1px 1px,
+    rgba(107, 143, 123, 0.15) 1px,
+    transparent 0
+  );
+  background-size: 48px 48px;
+}
+
+/* ─── Annotation Callouts ──────────────────────── */
+
+.annotation {
+  position: absolute;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(107, 143, 123, 0.3);
+  border-radius: 8px;
+  padding: 8px 14px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #F0EBE3;
+  white-space: nowrap;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.annotation::before {
+  content: "";
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: #6B8F7B;
+  border-radius: 50%;
+  box-shadow: 0 0 8px rgba(107, 143, 123, 0.6);
+}
+
+/* ─── Scroll Progress ──────────────────────────── */
+
+.progress-bar-gradient {
+  background: linear-gradient(90deg, #2D4A3E, #6B8F7B, #4CC9F0);
+}
+
+/* ─── Eyebrow Labels ───────────────────────────── */
+
+.eyebrow {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  font-style: italic;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  background: linear-gradient(135deg, #6B8F7B 0%, #4CC9F0 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ─── Feature Tags ─────────────────────────────── */
+
+.feature-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  background: rgba(45, 74, 62, 0.15);
+  border: 1px solid rgba(107, 143, 123, 0.2);
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: #6B8F7B;
+  transition: all 0.3s ease;
+}
+
+.feature-tag:hover {
+  border-color: rgba(107, 143, 123, 0.4);
+  background: rgba(45, 74, 62, 0.25);
+}
+
+/* ─── Metric Cards ─────────────────────────────── */
+
+.metric-card {
+  text-align: center;
+  padding: 24px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 12px;
+}
+
+.metric-value {
+  font-size: 2.5rem;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.metric-label {
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.5);
+  margin-top: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* ─── Hide GSAP elements until animation ───────── */
+
+.gsap-hidden {
+  visibility: hidden;
+}
