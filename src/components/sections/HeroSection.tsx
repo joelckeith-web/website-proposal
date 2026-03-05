@@ -4,8 +4,6 @@ import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ChevronDown } from "lucide-react";
-import { LaptopFrame } from "../ui/DeviceFrame";
-import { ScreenImage } from "../ui/ScreenImage";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -56,7 +54,6 @@ export function HeroSection() {
       );
 
       // Parallax on scroll — y movement only, NO opacity fade
-      // This ensures heading always reappears when scrolling back to top
       gsap.to(headingRef.current, {
         y: -80,
         ease: "none",
@@ -124,19 +121,19 @@ export function HeroSection() {
         {/* 3D Perspective wrapper for laptop spin */}
         <div ref={perspectiveRef} className="mt-12 w-full max-w-5xl px-4" style={{ perspective: "1200px" }}>
           <div ref={laptopRef} style={{ transformStyle: "preserve-3d" }}>
-            <LaptopFrame>
-              <div className="aspect-video relative overflow-hidden">
-                <div className="ken-burns-anim w-full h-full">
-                  <ScreenImage variant="hero" priority />
-                </div>
-              </div>
-            </LaptopFrame>
+            {/* eslint-disable @next/next/no-img-element */}
+            <img
+              src="/images/hero-macbook.png"
+              alt="Outdoor Renovations website displayed on MacBook Pro"
+              className="w-full h-auto block"
+              loading="eager"
+            />
           </div>
         </div>
       </div>
 
       {/* Scroll indicator */}
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 z-10">
+      <div className="relative mt-8 mb-4 flex flex-col items-center gap-2 z-10">
         <span className="text-[10px] font-bold text-muted-foreground tracking-widest uppercase">
           Scroll to explore
         </span>

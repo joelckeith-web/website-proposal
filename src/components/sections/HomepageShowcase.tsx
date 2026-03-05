@@ -10,20 +10,20 @@ gsap.registerPlugin(ScrollTrigger);
 
 const annotations = [
   {
-    label: "Video hero with trust signals",
-    position: { top: "15%", left: "-12%" },
+    label: "Video hero to show quality of work",
+    position: { top: "40%", left: "-14%" },
     dotSide: "right" as const,
     delay: 0,
   },
   {
     label: "Click-to-call CTA",
-    position: { top: "4%", right: "-8%" },
+    position: { top: "7%", right: "-10%" },
     dotSide: "left" as const,
     delay: 0.2,
   },
   {
     label: "Immediate credibility metrics",
-    position: { bottom: "18%", left: "50%", transform: "translateX(-50%)" },
+    position: { bottom: "-4%", left: "50%", transform: "translateX(-50%)" },
     dotSide: "top" as const,
     delay: 0.4,
   },

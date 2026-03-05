@@ -144,7 +144,7 @@ export function MobileExperience() {
                 <PhoneFrame>
                   {i === 1 ? (
                     /* Center phone: perpetual looping scroll */
-                    <div className="phone-scroll-anim" style={{ height: "100%", overflow: "hidden" }}>
+                    <div className="phone-scroll-slow" style={{ height: "100%", overflow: "hidden" }}>
                       {/* eslint-disable @next/next/no-img-element */}
                       <img
                         src="/screenshots/mobile-service-detail-full.png"

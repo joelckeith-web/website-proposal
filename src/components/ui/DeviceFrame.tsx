@@ -63,3 +63,38 @@ export function LaptopFrame({ children, className = "" }: LaptopFrameProps) {
     </div>
   );
 }
+
+/* ── MacBook Pro frame using Apple product photo ── */
+
+interface MacBookProFrameProps {
+  children: ReactNode;
+  className?: string;
+}
+
+export function MacBookProFrame({ children, className = "" }: MacBookProFrameProps) {
+  return (
+    <div className={`relative ${className}`}>
+      {/* MacBook Pro product photo as frame */}
+      {/* eslint-disable @next/next/no-img-element */}
+      <img
+        src="/images/macbook-pro-frame.png"
+        alt=""
+        aria-hidden="true"
+        className="w-full h-auto block relative z-0 pointer-events-none"
+        loading="eager"
+      />
+      {/* Screenshot overlaid on the screen area */}
+      <div
+        className="absolute z-10 overflow-hidden"
+        style={{
+          top: "3.5%",
+          left: "12.4%",
+          width: "75.4%",
+          height: "76%",
+        }}
+      >
+        {children}
+      </div>
+    </div>
+  );
+}

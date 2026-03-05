@@ -1,43 +1,18 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { BrowserFrame, PhoneFrame } from "../ui/DeviceFrame";
 import { ScreenImage } from "../ui/ScreenImage";
-import {
-  PenTool,
-  Layers,
-  Hammer,
-  Leaf,
-  Droplets,
-  Lightbulb,
-  Cog,
-  TreeDeciduous,
-} from "lucide-react";
 
 gsap.registerPlugin(ScrollTrigger);
-
-const services = [
-  { icon: PenTool, name: "Landscape Design" },
-  { icon: Layers, name: "Hardscaping" },
-  { icon: Hammer, name: "Custom Carpentry" },
-  { icon: Leaf, name: "Softscaping & Planting" },
-  { icon: Droplets, name: "Irrigation & Drainage" },
-  { icon: Lightbulb, name: "Landscape Lighting" },
-  { icon: Cog, name: "Metal Fabrication" },
-  { icon: TreeDeciduous, name: "Property Management" },
-];
 
 export function ServicesShowcase() {
   const sectionRef = useRef<HTMLElement>(null);
   const headingRef = useRef<HTMLDivElement>(null);
   const devicesRef = useRef<HTMLDivElement>(null);
-  const cardsRef = useRef<HTMLDivElement>(null);
-  const phoneScreenRef = useRef<HTMLDivElement>(null);
   const cursorRef = useRef<HTMLDivElement>(null);
-  const typingRef = useRef<HTMLDivElement>(null);
-  const [typedText, setTypedText] = useState("");
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -87,25 +62,8 @@ export function ServicesShowcase() {
         });
       }
 
-      // Auto-scroll phone content
-      if (phoneScreenRef.current) {
-        const img = phoneScreenRef.current.querySelector("img");
-        if (img) {
-          gsap.to(img, {
-            yPercent: -30,
-            ease: "none",
-            scrollTrigger: {
-              trigger: devicesRef.current,
-              start: "top 60%",
-              end: "bottom 30%",
-              scrub: 2,
-            },
-          });
-        }
-      }
-
-      // Mouse cursor moves to Full Name field, clicks, then types "John Doe"
-      if (cursorRef.current && typingRef.current) {
+      // Mouse cursor moves to the "Get My Free Consultation" submit button and clicks
+      if (cursorRef.current) {
         const tl = gsap.timeline({
           scrollTrigger: {
             trigger: devicesRef.current,
@@ -115,57 +73,25 @@ export function ServicesShowcase() {
           delay: 1.5,
         });
 
-        // Cursor enters from off-screen, moves to the Full Name form field
+        // Cursor enters from off-screen, moves to the submit button
         tl.fromTo(
           cursorRef.current,
           { opacity: 0, left: "85%", top: "8%" },
-          { opacity: 1, left: "74%", top: "48%", duration: 1.2, ease: "power2.inOut" }
+          { opacity: 1, left: "65%", top: "89%", duration: 1.4, ease: "power2.inOut" }
         )
-          // Click animation
+          // Click animation on the submit button
           .to(cursorRef.current, {
             scale: 0.85,
             duration: 0.12,
             yoyo: true,
             repeat: 1,
           })
-          // Show typing overlay after click
-          .to(typingRef.current, { opacity: 1, duration: 0.1 })
-          // Type "John Doe" character by character
-          .to(
-            { length: 0 },
-            {
-              length: 8,
-              duration: 1.2,
-              ease: "steps(8)",
-              onUpdate: function () {
-                const len = Math.round(this.targets()[0].length);
-                setTypedText("John Doe".slice(0, len));
-              },
-            }
-          )
-          // Pause then fade out cursor and text
+          // Pause then fade out cursor
           .to(cursorRef.current, {
             opacity: 0,
             duration: 0.6,
-            delay: 1,
+            delay: 1.2,
           });
-      }
-
-      // Service cards stagger
-      const cards = cardsRef.current?.children;
-      if (cards) {
-        gsap.from(cards, {
-          y: 40,
-          opacity: 0,
-          duration: 0.6,
-          stagger: 0.08,
-          ease: "power3.out",
-          scrollTrigger: {
-            trigger: cardsRef.current,
-            start: "top 92%",
-            toggleActions: "play none none none",
-          },
-        });
       }
     }, sectionRef);
 
@@ -192,12 +118,12 @@ export function ServicesShowcase() {
           </p>
         </div>
 
-        {/* Device preview: Laptop + Phone — larger frames */}
+        {/* Device preview: Laptop + Phone */}
         <div
           ref={devicesRef}
-          className="flex flex-col lg:flex-row items-center justify-center gap-8 mb-16"
+          className="flex flex-col lg:flex-row items-center justify-center gap-8"
         >
-          {/* Larger laptop */}
+          {/* Laptop */}
           <div className="laptop-wrapper w-full max-w-3xl relative">
             <BrowserFrame url="outdoor-renovations.vercel.app/services/landscape-design">
               <div className="aspect-video">
@@ -220,23 +146,12 @@ export function ServicesShowcase() {
                 />
               </svg>
             </div>
-            {/* Typing text overlay — appears where the Full Name field is */}
-            <div
-              ref={typingRef}
-              className="absolute pointer-events-none z-20"
-              style={{ top: "49%", left: "66%", opacity: 0 }}
-            >
-              <span className="text-[11px] font-sans text-gray-700 bg-white/90 px-1 rounded-sm">
-                {typedText}
-                <span className="animate-pulse">|</span>
-              </span>
-            </div>
           </div>
 
-          {/* Larger phone with auto-scroll */}
+          {/* Phone with slow perpetual auto-scroll */}
           <div className="phone-wrapper w-[240px] shrink-0">
             <PhoneFrame>
-              <div ref={phoneScreenRef} className="overflow-hidden" style={{ height: "100%" }}>
+              <div className="phone-scroll-slow overflow-hidden" style={{ height: "100%" }}>
                 {/* eslint-disable @next/next/no-img-element */}
                 <img
                   src="/screenshots/mobile-homepage-full.png"
@@ -247,26 +162,6 @@ export function ServicesShowcase() {
               </div>
             </PhoneFrame>
           </div>
-        </div>
-
-        {/* Service list */}
-        <div
-          ref={cardsRef}
-          className="grid grid-cols-2 md:grid-cols-4 gap-4"
-        >
-          {services.map(({ icon: Icon, name }) => (
-            <div
-              key={name}
-              className="card-showcase p-4 flex items-center gap-3"
-            >
-              <div className="w-10 h-10 rounded-lg flex items-center justify-center shrink-0 bg-brand/20">
-                <Icon className="w-5 h-5 text-brand-light" />
-              </div>
-              <span className="text-sm font-semibold text-foreground">
-                {name}
-              </span>
-            </div>
-          ))}
         </div>
       </div>
 
