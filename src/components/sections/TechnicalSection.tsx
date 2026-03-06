@@ -108,7 +108,7 @@ function AnimatedRing({ label, value }: { label: string; value: number }) {
     <div className="metric-ring flex flex-col items-center">
       <div
         ref={ringRef}
-        className="relative w-32 h-32 md:w-40 md:h-40 rounded-full flex items-center justify-center mb-4"
+        className="relative w-24 h-24 md:w-40 md:h-40 rounded-full flex items-center justify-center mb-3 md:mb-4"
         style={
           {
             "--ring-pct": "0",
@@ -144,33 +144,41 @@ export function TechnicalSection() {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      gsap.from(headingRef.current, {
-        y: 60,
-        opacity: 0,
-        duration: 1,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: headingRef.current,
-          start: "top 90%",
-          toggleActions: "play none none none",
-        },
-      });
+      const isDesktop = window.innerWidth >= 768;
 
-      // Feature cards stagger
-      const features = featuresRef.current?.children;
-      if (features) {
-        gsap.from(features, {
-          y: 50,
+      if (isDesktop) {
+        gsap.from(headingRef.current, {
+          y: 60,
           opacity: 0,
-          duration: 0.7,
-          stagger: 0.1,
+          duration: 1,
           ease: "power3.out",
           scrollTrigger: {
-            trigger: featuresRef.current,
-            start: "top 92%",
+            trigger: headingRef.current,
+            start: "top 90%",
             toggleActions: "play none none none",
           },
         });
+      }
+
+      // Tech stack cards — only animate on desktop
+      const features = featuresRef.current?.children;
+      if (features && isDesktop) {
+        gsap.fromTo(
+          features,
+          { y: 30, opacity: 0 },
+          {
+            y: 0,
+            opacity: 1,
+            duration: 0.7,
+            stagger: 0.1,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: featuresRef.current,
+              start: "top 100%",
+              toggleActions: "play none none none",
+            },
+          }
+        );
       }
     }, sectionRef);
 
@@ -180,25 +188,25 @@ export function TechnicalSection() {
   return (
     <section
       ref={sectionRef}
-      className="relative pt-24 md:pt-32 pb-12 md:pb-16 px-6 md:px-12 lg:px-20 xl:px-32"
+      className="relative pt-8 md:pt-32 pb-6 md:pb-16 px-6 md:px-12 lg:px-20 xl:px-32"
     >
       <div className="relative z-10 mx-auto w-full max-w-7xl">
         {/* Heading */}
-        <div ref={headingRef} className="mb-16">
-          <span className="eyebrow mb-4 block">Under the Hood</span>
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-heading font-black tracking-tight leading-[1.1]">
+        <div ref={headingRef} className="mb-4 md:mb-16">
+          <span className="eyebrow mb-2 md:mb-4 block">Under the Hood</span>
+          <h2 className="text-3xl md:text-5xl lg:text-6xl font-heading font-black tracking-tight leading-[1.1]">
             Engineered for
             <br />
             <span className="text-gradient">Performance</span>
           </h2>
-          <p className="mt-6 text-lg text-muted-foreground max-w-2xl">
+          <p className="mt-3 md:mt-6 text-sm md:text-lg text-muted-foreground max-w-2xl">
             Built on modern infrastructure that loads fast, ranks high, and
             scales with your business.
           </p>
         </div>
 
         {/* Lighthouse Metrics — larger rings with count-up */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-16">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8 mb-6 md:mb-16">
           {performanceMetrics.map(({ label, value }) => (
             <AnimatedRing key={label} label={label} value={value} />
           ))}
@@ -207,24 +215,24 @@ export function TechnicalSection() {
         {/* Tech stack cards */}
         <div
           ref={featuresRef}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5"
+          className="grid grid-cols-2 lg:grid-cols-3 gap-3 md:gap-5"
         >
           {techFeatures.map(({ icon: Icon, title, description, tag }) => (
-            <div key={title} className="card-showcase p-6">
-              <div className="flex items-start gap-4">
-                <div className="w-10 h-10 rounded-lg flex items-center justify-center shrink-0 bg-brand/20">
-                  <Icon className="w-5 h-5 text-brand-light" />
+            <div key={title} className="card-showcase p-3 md:p-6">
+              <div className="flex flex-col md:flex-row md:items-start gap-2 md:gap-4">
+                <div className="w-8 h-8 md:w-10 md:h-10 rounded-lg flex items-center justify-center shrink-0 bg-brand/20">
+                  <Icon className="w-4 h-4 md:w-5 md:h-5 text-brand-light" />
                 </div>
                 <div>
-                  <div className="flex items-center gap-2 mb-1">
-                    <h3 className="text-sm font-bold text-foreground">
+                  <div className="flex items-center gap-1.5 md:gap-2 mb-1">
+                    <h3 className="text-xs md:text-sm font-bold text-foreground">
                       {title}
                     </h3>
-                    <span className="feature-tag text-[10px] py-0.5 px-2">
+                    <span className="feature-tag text-[8px] md:text-[10px] py-0.5 px-1.5 md:px-2">
                       {tag}
                     </span>
                   </div>
-                  <p className="text-xs text-muted-foreground leading-relaxed">
+                  <p className="text-[10px] md:text-xs text-muted-foreground leading-relaxed">
                     {description}
                   </p>
                 </div>

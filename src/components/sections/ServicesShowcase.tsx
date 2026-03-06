@@ -16,54 +16,58 @@ export function ServicesShowcase() {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      // Heading
-      gsap.from(headingRef.current, {
-        y: 60,
-        opacity: 0,
-        duration: 1,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: headingRef.current,
-          start: "top 90%",
-          toggleActions: "play none none none",
-        },
-      });
+      const isDesktop = window.innerWidth >= 768;
 
-      // Devices slide in from sides
-      const laptop = devicesRef.current?.querySelector(".laptop-wrapper");
-      const phone = devicesRef.current?.querySelector(".phone-wrapper");
-
-      if (laptop) {
-        gsap.from(laptop, {
-          x: -100,
+      if (isDesktop) {
+        // Heading
+        gsap.from(headingRef.current, {
+          y: 60,
           opacity: 0,
-          duration: 1.2,
+          duration: 1,
           ease: "power3.out",
           scrollTrigger: {
-            trigger: devicesRef.current,
+            trigger: headingRef.current,
             start: "top 90%",
             toggleActions: "play none none none",
           },
         });
-      }
 
-      if (phone) {
-        gsap.from(phone, {
-          x: 100,
-          opacity: 0,
-          duration: 1.2,
-          delay: 0.2,
-          ease: "power3.out",
-          scrollTrigger: {
-            trigger: devicesRef.current,
-            start: "top 90%",
-            toggleActions: "play none none none",
-          },
-        });
+        // Devices slide in from sides
+        const laptop = devicesRef.current?.querySelector(".laptop-wrapper");
+        const phone = devicesRef.current?.querySelector(".phone-wrapper");
+
+        if (laptop) {
+          gsap.from(laptop, {
+            x: -100,
+            opacity: 0,
+            duration: 1.2,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: devicesRef.current,
+              start: "top 90%",
+              toggleActions: "play none none none",
+            },
+          });
+        }
+
+        if (phone) {
+          gsap.from(phone, {
+            x: 100,
+            opacity: 0,
+            duration: 1.2,
+            delay: 0.2,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: devicesRef.current,
+              start: "top 90%",
+              toggleActions: "play none none none",
+            },
+          });
+        }
       }
 
       // Mouse cursor moves to the "Get My Free Consultation" submit button and clicks
-      if (cursorRef.current) {
+      if (cursorRef.current && window.innerWidth >= 768) {
         const tl = gsap.timeline({
           scrollTrigger: {
             trigger: devicesRef.current,
@@ -101,11 +105,11 @@ export function ServicesShowcase() {
   return (
     <section
       ref={sectionRef}
-      className="relative py-24 md:py-32 px-6 md:px-12 lg:px-20 xl:px-32"
+      className="relative py-8 md:py-32 px-6 md:px-12 lg:px-20 xl:px-32"
     >
       <div className="relative z-10 mx-auto w-full max-w-7xl">
         {/* Heading */}
-        <div ref={headingRef} className="mb-16">
+        <div ref={headingRef} className="mb-6 md:mb-16">
           <span className="eyebrow mb-4 block">Service Pages</span>
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-heading font-black tracking-tight leading-[1.1]">
             8 Expert Services,
@@ -149,7 +153,7 @@ export function ServicesShowcase() {
           </div>
 
           {/* Phone with slow perpetual auto-scroll */}
-          <div className="phone-wrapper w-[240px] shrink-0">
+          <div className="phone-wrapper w-[200px] lg:w-[240px] shrink-0">
             <PhoneFrame>
               <div className="phone-scroll-slow overflow-hidden" style={{ height: "100%" }}>
                 {/* eslint-disable @next/next/no-img-element */}

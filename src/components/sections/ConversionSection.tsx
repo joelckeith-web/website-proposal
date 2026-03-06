@@ -49,29 +49,33 @@ export function ConversionSection() {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      gsap.from(headingRef.current, {
-        y: 60,
-        opacity: 0,
-        duration: 1,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: headingRef.current,
-          start: "top 90%",
-          toggleActions: "play none none none",
-        },
-      });
+      const isDesktop = window.innerWidth >= 768;
 
-      gsap.from(contentRef.current, {
-        y: 80,
-        opacity: 0,
-        duration: 1.2,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: contentRef.current,
-          start: "top 92%",
-          toggleActions: "play none none none",
-        },
-      });
+      if (isDesktop) {
+        gsap.from(headingRef.current, {
+          y: 60,
+          opacity: 0,
+          duration: 1,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: headingRef.current,
+            start: "top 90%",
+            toggleActions: "play none none none",
+          },
+        });
+
+        gsap.from(contentRef.current, {
+          y: 80,
+          opacity: 0,
+          duration: 1.2,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: contentRef.current,
+            start: "top 92%",
+            toggleActions: "play none none none",
+          },
+        });
+      }
     }, sectionRef);
 
     return () => ctx.revert();
@@ -94,18 +98,18 @@ export function ConversionSection() {
   return (
     <section
       ref={sectionRef}
-      className="relative pt-12 md:pt-16 pb-24 md:pb-32 px-6 md:px-12 lg:px-20 xl:px-32"
+      className="relative pt-6 md:pt-16 pb-6 md:pb-32 px-6 md:px-12 lg:px-20 xl:px-32"
     >
       <div className="relative z-10 mx-auto w-full max-w-7xl">
         {/* Heading */}
-        <div ref={headingRef} className="text-center mb-16">
+        <div ref={headingRef} className="text-center mb-4 md:mb-16">
           <span className="eyebrow mb-4 block">Conversion Engine</span>
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-heading font-black tracking-tight leading-[1.1]">
             Every Page Drives
             <br />
             <span className="text-gradient">One Action</span>
           </h2>
-          <p className="mt-6 text-lg text-muted-foreground max-w-2xl mx-auto">
+          <p className="mt-3 md:mt-6 text-sm md:text-lg text-muted-foreground max-w-2xl mx-auto">
             Book a consultation. That&apos;s the goal of every button, form, and
             call-to-action across the entire site.
           </p>
@@ -113,15 +117,15 @@ export function ConversionSection() {
 
         {/* Vertical tabs on left + content panel on right */}
         <div ref={contentRef} className="flex flex-col lg:flex-row gap-6">
-          {/* Vertical tab buttons — stacked on the left */}
-          <div className="flex lg:flex-col gap-3 lg:w-60 shrink-0">
+          {/* Tab buttons — 2x2 grid on mobile, vertical stack on desktop */}
+          <div className="grid grid-cols-2 lg:grid-cols-1 gap-2 lg:gap-3 lg:w-60 shrink-0">
             {tabs.map((tab, i) => {
               const TabIcon = tab.icon;
               return (
                 <button
                   key={tab.title}
                   onClick={() => setActiveTab(i)}
-                  className={`flex items-center gap-3 px-5 py-4 rounded-xl text-sm font-semibold text-left transition-all duration-300 w-full ${
+                  className={`flex items-center gap-2 lg:gap-3 px-3 lg:px-5 py-3 lg:py-4 rounded-xl text-xs lg:text-sm font-semibold text-left transition-all duration-300 w-full ${
                     i === activeTab
                       ? "text-cream shadow-lg shadow-brand/20"
                       : "bg-white/5 text-muted-foreground hover:bg-white/10 border border-white/10"
@@ -132,7 +136,7 @@ export function ConversionSection() {
                       : undefined
                   }
                 >
-                  <TabIcon className="w-5 h-5 shrink-0" />
+                  <TabIcon className="w-4 h-4 lg:w-5 lg:h-5 shrink-0" />
                   {tab.title}
                 </button>
               );
@@ -141,7 +145,7 @@ export function ConversionSection() {
 
           {/* Content panel — expands left to right */}
           <div ref={panelRef} className="flex-1 min-w-0">
-            <div className="space-y-6 mb-8">
+            <div className="space-y-3 md:space-y-6 mb-4 md:mb-8">
               <div className="flex items-center gap-4">
                 <div className="w-14 h-14 rounded-2xl flex items-center justify-center bg-brand/20 shrink-0">
                   <Icon className="w-7 h-7 text-brand-light" />

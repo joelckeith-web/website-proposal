@@ -26,46 +26,50 @@ export function ClosingSection() {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      gsap.from(headingRef.current, {
-        y: 60,
-        opacity: 0,
-        duration: 1,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: headingRef.current,
-          start: "top 90%",
-          toggleActions: "play none none none",
-        },
-      });
+      const isDesktop = window.innerWidth >= 768;
 
-      const items = listRef.current?.children;
-      if (items) {
-        gsap.from(items, {
-          x: -40,
+      if (isDesktop) {
+        gsap.from(headingRef.current, {
+          y: 60,
           opacity: 0,
-          duration: 0.6,
-          stagger: 0.08,
+          duration: 1,
           ease: "power3.out",
           scrollTrigger: {
-            trigger: listRef.current,
-            start: "top 92%",
+            trigger: headingRef.current,
+            start: "top 90%",
+            toggleActions: "play none none none",
+          },
+        });
+
+        const items = listRef.current?.children;
+        if (items) {
+          gsap.from(items, {
+            x: -40,
+            opacity: 0,
+            duration: 0.6,
+            stagger: 0.08,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: listRef.current,
+              start: "top 92%",
+              toggleActions: "play none none none",
+            },
+          });
+        }
+
+        gsap.from(ctaRef.current, {
+          y: 40,
+          opacity: 0,
+          scale: 0.95,
+          duration: 1,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: ctaRef.current,
+            start: "top 90%",
             toggleActions: "play none none none",
           },
         });
       }
-
-      gsap.from(ctaRef.current, {
-        y: 40,
-        opacity: 0,
-        scale: 0.95,
-        duration: 1,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: ctaRef.current,
-          start: "top 90%",
-          toggleActions: "play none none none",
-        },
-      });
     }, sectionRef);
 
     return () => ctx.revert();
@@ -74,7 +78,7 @@ export function ClosingSection() {
   return (
     <section
       ref={sectionRef}
-      className="relative pt-12 md:pt-16 pb-24 md:pb-32 px-6 md:px-12 lg:px-20 xl:px-32"
+      className="relative pt-8 md:pt-16 pb-10 md:pb-32 px-6 md:px-12 lg:px-20 xl:px-32"
     >
       {/* Background glow */}
       <div
@@ -87,7 +91,7 @@ export function ClosingSection() {
 
       <div className="relative z-10 mx-auto w-full max-w-5xl text-center">
         {/* Heading */}
-        <div ref={headingRef} className="mb-12">
+        <div ref={headingRef} className="mb-8 md:mb-12">
           <span className="eyebrow mb-4 block">What&apos;s Included</span>
           <h2 className="text-4xl md:text-5xl lg:text-7xl font-heading font-black tracking-tight leading-[1.1]">
             Ready to
@@ -103,7 +107,7 @@ export function ClosingSection() {
         {/* Deliverables list */}
         <div
           ref={listRef}
-          className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-left max-w-4xl mx-auto mb-16"
+          className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-left max-w-4xl mx-auto mb-10 md:mb-16"
         >
           {deliverables.map((item) => (
             <div
@@ -141,7 +145,7 @@ export function ClosingSection() {
         </div>
 
         {/* Footer */}
-        <div className="mt-24 pt-8 border-t border-white/5">
+        <div className="mt-16 md:mt-24 pt-8 border-t border-white/5">
           <div className="flex items-center justify-center gap-3 mb-4">
             <div className="line-accent" />
             <span className="text-xs font-bold uppercase tracking-[0.25em] text-muted-foreground">

@@ -24,86 +24,81 @@ export function MobileExperience() {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      // Heading
-      gsap.from(headingRef.current, {
-        y: 60,
-        opacity: 0,
-        duration: 1,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: headingRef.current,
-          start: "top 90%",
-          toggleActions: "play none none none",
-        },
-      });
+      const isDesktop = window.innerWidth >= 768;
 
-      // Phones fan out from center
-      const phones = phonesRef.current?.querySelectorAll(".phone-item");
-      if (phones) {
-        phones.forEach((phone, i) => {
-          const angle = (i - 1) * 8; // -8, 0, 8 degrees
-          const xOffset = (i - 1) * 40;
-
-          gsap.from(phone, {
-            y: 150,
-            opacity: 0,
-            rotation: 0,
-            x: 0,
-            scale: 0.8,
-            duration: 1.2,
-            delay: i * 0.15,
-            ease: "power3.out",
-            scrollTrigger: {
-              trigger: phonesRef.current,
-              start: "top 90%",
-              toggleActions: "play none none none",
-            },
-          });
-
-          // Fan out on further scroll
-          gsap.to(phone, {
-            rotation: angle,
-            x: xOffset,
-            ease: "none",
-            scrollTrigger: {
-              trigger: phonesRef.current,
-              start: "top 50%",
-              end: "bottom 50%",
-              scrub: 1,
-            },
-          });
+      if (isDesktop) {
+        // Heading
+        gsap.from(headingRef.current, {
+          y: 60,
+          opacity: 0,
+          duration: 1,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: headingRef.current,
+            start: "top 90%",
+            toggleActions: "play none none none",
+          },
         });
-      }
 
-      // Stats stagger — use fromTo with aggressive trigger
-      const statCards = statsRef.current?.children;
-      if (statCards) {
-        gsap.fromTo(
-          statCards,
-          { y: 30, opacity: 0 },
-          {
-            y: 0,
-            opacity: 1,
-            duration: 0.6,
-            stagger: 0.1,
-            ease: "power3.out",
-            scrollTrigger: {
-              trigger: statsRef.current,
-              start: "top 98%",
-              toggleActions: "play none none none",
-            },
-          }
-        );
-      }
+        // Phones fan out from center
+        const phones = phonesRef.current?.querySelectorAll(".phone-item");
+        if (phones) {
+          phones.forEach((phone, i) => {
+            const angle = (i - 1) * 8; // -8, 0, 8 degrees
+            const xOffset = (i - 1) * 40;
 
-      // Fallback: ensure cards become visible after 3s even without scroll trigger
-      gsap.to(statCards || [], {
-        opacity: 1,
-        y: 0,
-        delay: 3,
-        duration: 0.5,
-        overwrite: false,
-      });
+            gsap.from(phone, {
+              y: 150,
+              opacity: 0,
+              rotation: 0,
+              x: 0,
+              scale: 0.8,
+              duration: 1.2,
+              delay: i * 0.15,
+              ease: "power3.out",
+              scrollTrigger: {
+                trigger: phonesRef.current,
+                start: "top 90%",
+                toggleActions: "play none none none",
+              },
+            });
+
+            // Fan out on further scroll
+            gsap.to(phone, {
+              rotation: angle,
+              x: xOffset,
+              ease: "none",
+              scrollTrigger: {
+                trigger: phonesRef.current,
+                start: "top 50%",
+                end: "bottom 50%",
+                scrub: 1,
+              },
+            });
+          });
+        }
+
+        // Stats stagger
+        const statCards = statsRef.current?.children;
+        if (statCards) {
+          gsap.fromTo(
+            statCards,
+            { y: 30, opacity: 0 },
+            {
+              y: 0,
+              opacity: 1,
+              duration: 0.6,
+              stagger: 0.1,
+              ease: "power3.out",
+              scrollTrigger: {
+                trigger: statsRef.current,
+                start: "top 98%",
+                toggleActions: "play none none none",
+              },
+            }
+          );
+        }
+      }
     }, sectionRef);
 
     return () => ctx.revert();
@@ -112,11 +107,11 @@ export function MobileExperience() {
   return (
     <section
       ref={sectionRef}
-      className="relative py-24 md:py-32 px-6 md:px-12 lg:px-20 xl:px-32"
+      className="relative py-8 md:py-32 px-6 md:px-12 lg:px-20 xl:px-32"
     >
       <div className="relative z-10 mx-auto w-full max-w-7xl">
         {/* Heading */}
-        <div ref={headingRef} className="text-center mb-16">
+        <div ref={headingRef} className="text-center mb-6 md:mb-16">
           <span className="eyebrow mb-4 block">Mobile Experience</span>
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-heading font-black tracking-tight leading-[1.1]">
             Built for the
@@ -132,13 +127,13 @@ export function MobileExperience() {
         {/* Phone array */}
         <div
           ref={phonesRef}
-          className="flex justify-center items-end gap-4 md:gap-8 mb-16"
+          className="flex justify-center items-end gap-3 md:gap-8 mb-10 md:mb-16"
         >
           {(["mobile-home", "mobile-service-detail", "mobile-services"] as const).map(
             (variant, i) => (
               <div
                 key={variant}
-                className={`phone-item ${i === 1 ? "w-[180px] md:w-[220px] z-10" : "w-[140px] md:w-[180px]"}`}
+                className={`phone-item ${i === 1 ? "w-[140px] md:w-[220px] z-10" : "w-[100px] md:w-[180px]"}`}
                 style={{ transformOrigin: "bottom center" }}
               >
                 <PhoneFrame>
