@@ -43,7 +43,6 @@ const tabs = [
       "City-specific landing pages targeting local search intent across the Austin metro area. Each page is SEO-optimized for that city.",
     screenshot: "location-page" as const,
     zoom: null,
-    showHighlight: true,
   },
 ];
 
@@ -226,22 +225,6 @@ export function ConversionSection() {
                 >
                   <ScreenImage variant={current.screenshot} />
                 </div>
-
-                {/* Green highlighter swipe over "Westlake Hills" in hero heading */}
-                {current.showHighlight && (
-                  <div
-                    key={activeTab}
-                    className="absolute pointer-events-none z-10 highlighter-swipe"
-                    style={{
-                      top: "37%",
-                      left: "35%",
-                      width: "20%",
-                      height: "4%",
-                      background: "rgba(107, 143, 123, 0.55)",
-                      borderRadius: "3px",
-                    }}
-                  />
-                )}
               </div>
             </BrowserFrame>
           </div>
