@@ -179,7 +179,7 @@ export function ConversionSection() {
                 <button
                   key={tab.title}
                   onClick={() => setActiveTab(i)}
-                  className={`flex items-center gap-2 px-3 py-1.5 rounded-md text-xs font-semibold text-left transition-all duration-300 w-full ${
+                  className={`flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-semibold text-left transition-all duration-300 w-full ${
                     i === activeTab
                       ? "text-cream shadow-lg shadow-brand/20"
                       : "bg-white/5 text-muted-foreground hover:bg-white/10 border border-white/10"
@@ -190,7 +190,7 @@ export function ConversionSection() {
                       : undefined
                   }
                 >
-                  <TabIcon className="w-3.5 h-3.5 shrink-0" />
+                  <TabIcon className="w-4 h-4 shrink-0" />
                   {tab.title}
                 </button>
               );
@@ -228,25 +228,20 @@ export function ConversionSection() {
                   <ScreenImage variant={current.screenshot} />
                 </div>
 
-                {/* Green highlighter for Location Pages tab */}
+                {/* Green highlighter swipe over "Westlake Hills" in hero heading */}
                 {current.showHighlight && (
                   <div
-                    className="absolute pointer-events-none z-10"
+                    key={activeTab}
+                    className="absolute pointer-events-none z-10 highlighter-swipe"
                     style={{
-                      top: "24%",
-                      left: "6%",
-                      padding: "2px 8px",
-                      background: "rgba(107, 143, 123, 0.45)",
-                      borderRadius: "3px",
+                      top: "28%",
+                      left: "18%",
+                      width: "27%",
+                      height: "5%",
+                      background: "rgba(107, 143, 123, 0.4)",
+                      borderRadius: "2px",
                     }}
-                  >
-                    <span
-                      className="text-white font-bold whitespace-nowrap"
-                      style={{ fontSize: "clamp(6px, 1.2vw, 14px)" }}
-                    >
-                      Westlake Hills
-                    </span>
-                  </div>
+                  />
                 )}
               </div>
             </BrowserFrame>
