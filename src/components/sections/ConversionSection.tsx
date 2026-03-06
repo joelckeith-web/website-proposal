@@ -234,10 +234,10 @@ export function ConversionSection() {
                     key={activeTab}
                     className="absolute pointer-events-none z-10 highlighter-swipe"
                     style={{
-                      top: "28%",
-                      left: "18%",
-                      width: "27%",
-                      height: "5%",
+                      top: "48%",
+                      left: "33%",
+                      width: "24%",
+                      height: "4.5%",
                       background: "rgba(107, 143, 123, 0.4)",
                       borderRadius: "2px",
                     }}
