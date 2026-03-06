@@ -16,13 +16,17 @@ const tabs = [
     description:
       "Sticky header with phone number on every page. One tap from any screen to connect directly with the business.",
     screenshot: "hero" as const,
+    // Zoom into the phone number in the top-right nav
+    zoom: { scale: 3.2, origin: "88% 4%" },
   },
   {
     icon: MousePointerClick,
     title: "Strategic CTAs",
     description:
       '"Get a Consultation" buttons placed at every natural decision point throughout the site. Above the fold, after services, below reviews.',
-    screenshot: "homepage-cta-section" as const,
+    screenshot: "hero" as const,
+    // Zoom into the CTA buttons below the hero text
+    zoom: { scale: 2.2, origin: "35% 75%" },
   },
   {
     icon: FileText,
@@ -30,6 +34,7 @@ const tabs = [
     description:
       "React Hook Form with field validation, designed for quick mobile completion. Name, phone, service type — three fields to a lead.",
     screenshot: "service-detail" as const,
+    zoom: null,
   },
   {
     icon: MapPin,
@@ -37,6 +42,8 @@ const tabs = [
     description:
       "City-specific landing pages targeting local search intent across the Austin metro area. Each page is SEO-optimized for that city.",
     screenshot: "location-page" as const,
+    zoom: null,
+    showHighlight: true,
   },
 ];
 
@@ -46,6 +53,7 @@ export function ConversionSection() {
   const contentRef = useRef<HTMLDivElement>(null);
   const [activeTab, setActiveTab] = useState(0);
   const panelRef = useRef<HTMLDivElement>(null);
+  const imageRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -81,7 +89,7 @@ export function ConversionSection() {
     return () => ctx.revert();
   }, []);
 
-  // Animate panel on tab change — expand left to right
+  // Animate panel + image zoom on tab change
   useEffect(() => {
     if (panelRef.current) {
       gsap.fromTo(
@@ -89,6 +97,28 @@ export function ConversionSection() {
         { opacity: 0, x: -30 },
         { opacity: 1, x: 0, duration: 0.5, ease: "power2.out" }
       );
+    }
+
+    // Animate the "push into" zoom
+    if (imageRef.current) {
+      const zoom = tabs[activeTab].zoom;
+      if (zoom) {
+        // Reset to normal first, then push in
+        gsap.set(imageRef.current, { scale: 1 });
+        gsap.to(imageRef.current, {
+          scale: zoom.scale,
+          duration: 1.2,
+          ease: "power2.out",
+          delay: 0.3,
+        });
+      } else {
+        // Reset to normal view
+        gsap.to(imageRef.current, {
+          scale: 1,
+          duration: 0.6,
+          ease: "power2.out",
+        });
+      }
     }
   }, [activeTab]);
 
@@ -117,15 +147,15 @@ export function ConversionSection() {
 
         {/* Vertical tabs on left + content panel on right */}
         <div ref={contentRef} className="flex flex-col lg:flex-row gap-6">
-          {/* Tab buttons — 2x2 grid on mobile, vertical stack on desktop */}
-          <div className="grid grid-cols-2 lg:grid-cols-1 gap-2 lg:gap-3 lg:w-60 shrink-0">
+          {/* Tab buttons — compact pills */}
+          <div className="grid grid-cols-2 lg:grid-cols-1 gap-2 lg:w-44 shrink-0">
             {tabs.map((tab, i) => {
               const TabIcon = tab.icon;
               return (
                 <button
                   key={tab.title}
                   onClick={() => setActiveTab(i)}
-                  className={`flex items-center gap-2 lg:gap-3 px-3 lg:px-5 py-3 lg:py-4 rounded-xl text-xs lg:text-sm font-semibold text-left transition-all duration-300 w-full ${
+                  className={`flex items-center gap-2 px-3 py-2.5 rounded-lg text-xs font-semibold text-left transition-all duration-300 w-full ${
                     i === activeTab
                       ? "text-cream shadow-lg shadow-brand/20"
                       : "bg-white/5 text-muted-foreground hover:bg-white/10 border border-white/10"
@@ -136,14 +166,14 @@ export function ConversionSection() {
                       : undefined
                   }
                 >
-                  <TabIcon className="w-4 h-4 lg:w-5 lg:h-5 shrink-0" />
+                  <TabIcon className="w-4 h-4 shrink-0" />
                   {tab.title}
                 </button>
               );
             })}
           </div>
 
-          {/* Content panel — expands left to right */}
+          {/* Content panel */}
           <div ref={panelRef} className="flex-1 min-w-0">
             <div className="space-y-3 md:space-y-6 mb-4 md:mb-8">
               <div className="flex items-center gap-4">
@@ -161,10 +191,39 @@ export function ConversionSection() {
               </p>
             </div>
 
-            {/* Screenshot with highlight overlays */}
+            {/* Screenshot with zoom + highlight overlays */}
             <BrowserFrame url="outdoor-renovations.vercel.app">
-              <div className="aspect-video">
-                <ScreenImage variant={current.screenshot} />
+              <div className="aspect-video overflow-hidden relative">
+                <div
+                  ref={imageRef}
+                  className="w-full h-full"
+                  style={{
+                    transformOrigin: current.zoom?.origin || "center center",
+                  }}
+                >
+                  <ScreenImage variant={current.screenshot} />
+                </div>
+
+                {/* Green highlighter for Location Pages tab */}
+                {current.showHighlight && (
+                  <div
+                    className="absolute pointer-events-none z-10"
+                    style={{
+                      top: "24%",
+                      left: "6%",
+                      padding: "2px 8px",
+                      background: "rgba(107, 143, 123, 0.45)",
+                      borderRadius: "3px",
+                    }}
+                  >
+                    <span
+                      className="text-white font-bold whitespace-nowrap"
+                      style={{ fontSize: "clamp(6px, 1.2vw, 14px)" }}
+                    >
+                      Westlake Hills
+                    </span>
+                  </div>
+                )}
               </div>
             </BrowserFrame>
           </div>
