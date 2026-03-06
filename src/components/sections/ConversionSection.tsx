@@ -17,7 +17,7 @@ const tabs = [
       "Sticky header with phone number on every page. One tap from any screen to connect directly with the business.",
     screenshot: "hero" as const,
     // Zoom into the phone number in the top-right nav
-    zoom: { scale: 3.2, origin: "88% 4%" },
+    zoom: { scale: 2.24, origin: "88% 4%" },
   },
   {
     icon: MousePointerClick,
@@ -26,7 +26,7 @@ const tabs = [
       '"Get a Consultation" buttons placed at every natural decision point throughout the site. Above the fold, after services, below reviews.',
     screenshot: "hero" as const,
     // Zoom into the CTA buttons below the hero text
-    zoom: { scale: 2.2, origin: "35% 75%" },
+    zoom: { scale: 1.54, origin: "35% 75%" },
   },
   {
     icon: FileText,
@@ -54,6 +54,7 @@ export function ConversionSection() {
   const [activeTab, setActiveTab] = useState(0);
   const panelRef = useRef<HTMLDivElement>(null);
   const imageRef = useRef<HTMLDivElement>(null);
+  const hasEnteredView = useRef(false);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -84,6 +85,26 @@ export function ConversionSection() {
           },
         });
       }
+
+      // Gate the initial zoom — wait until the section is fully in view
+      ScrollTrigger.create({
+        trigger: contentRef.current,
+        start: "top 75%",
+        once: true,
+        onEnter: () => {
+          hasEnteredView.current = true;
+          // Fire initial zoom for whatever tab is active (default: Click-to-Call)
+          const zoom = tabs[0].zoom;
+          if (zoom && imageRef.current) {
+            gsap.to(imageRef.current, {
+              scale: zoom.scale,
+              duration: 2,
+              ease: "power2.out",
+              delay: 0.5,
+            });
+          }
+        },
+      });
     }, sectionRef);
 
     return () => ctx.revert();
@@ -99,23 +120,26 @@ export function ConversionSection() {
       );
     }
 
-    // Animate the "push into" zoom
+    // Skip zoom on initial mount — ScrollTrigger onEnter handles that
+    if (!hasEnteredView.current) return;
+
+    // Animate the "push into" zoom on user tab clicks
     if (imageRef.current) {
       const zoom = tabs[activeTab].zoom;
       if (zoom) {
-        // Reset to normal first, then push in
+        // Reset to normal first, then push in slowly
         gsap.set(imageRef.current, { scale: 1 });
         gsap.to(imageRef.current, {
           scale: zoom.scale,
-          duration: 1.2,
+          duration: 2,
           ease: "power2.out",
-          delay: 0.3,
+          delay: 0.5,
         });
       } else {
         // Reset to normal view
         gsap.to(imageRef.current, {
           scale: 1,
-          duration: 0.6,
+          duration: 0.8,
           ease: "power2.out",
         });
       }
@@ -147,15 +171,15 @@ export function ConversionSection() {
 
         {/* Vertical tabs on left + content panel on right */}
         <div ref={contentRef} className="flex flex-col lg:flex-row gap-6">
-          {/* Tab buttons — compact pills */}
-          <div className="grid grid-cols-2 lg:grid-cols-1 gap-2 lg:w-44 shrink-0">
+          {/* Tab buttons — stacked top-left */}
+          <div className="grid grid-cols-2 lg:flex lg:flex-col gap-1.5 lg:w-60 shrink-0 self-start">
             {tabs.map((tab, i) => {
               const TabIcon = tab.icon;
               return (
                 <button
                   key={tab.title}
                   onClick={() => setActiveTab(i)}
-                  className={`flex items-center gap-2 px-3 py-2.5 rounded-lg text-xs font-semibold text-left transition-all duration-300 w-full ${
+                  className={`flex items-center gap-2 px-3 py-1.5 rounded-md text-xs font-semibold text-left transition-all duration-300 w-full ${
                     i === activeTab
                       ? "text-cream shadow-lg shadow-brand/20"
                       : "bg-white/5 text-muted-foreground hover:bg-white/10 border border-white/10"
@@ -166,7 +190,7 @@ export function ConversionSection() {
                       : undefined
                   }
                 >
-                  <TabIcon className="w-4 h-4 shrink-0" />
+                  <TabIcon className="w-3.5 h-3.5 shrink-0" />
                   {tab.title}
                 </button>
               );
