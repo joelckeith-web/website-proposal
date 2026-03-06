@@ -3,46 +3,18 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { Palette, Eye, Smartphone, Zap } from "lucide-react";
+import { siteConfig } from "@/lib/site.config";
+import { getIcon } from "@/lib/icons";
 
 gsap.registerPlugin(ScrollTrigger);
-
-const principles = [
-  {
-    icon: Palette,
-    title: "Earth-Toned Luxury",
-    description:
-      "A warm, organic palette of deep greens, creams, and charcoal that reflects the natural beauty of outdoor living.",
-    color: "#2D4A3E",
-  },
-  {
-    icon: Eye,
-    title: "Trust-First Design",
-    description:
-      "Licensing badges, project counts, and star ratings placed above the fold — credibility before the first scroll.",
-    color: "#6B8F7B",
-  },
-  {
-    icon: Smartphone,
-    title: "Mobile-First Architecture",
-    description:
-      "Built for the 70% of visitors who arrive on a phone. Every tap, swipe, and scroll is intentional.",
-    color: "#4CC9F0",
-  },
-  {
-    icon: Zap,
-    title: "Conversion-Engineered",
-    description:
-      "Every page drives one action: book a consultation. CTAs, click-to-call, and contact forms at every touchpoint.",
-    color: "#F0EBE3",
-  },
-];
 
 export function DesignPhilosophy() {
   const sectionRef = useRef<HTMLElement>(null);
   const headingRef = useRef<HTMLDivElement>(null);
   const cardsRef = useRef<HTMLDivElement>(null);
   const paletteRef = useRef<HTMLDivElement>(null);
+
+  const cfg = siteConfig.sections.designPhilosophy;
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -117,15 +89,14 @@ export function DesignPhilosophy() {
       <div className="relative z-10 mx-auto w-full max-w-7xl">
         {/* Heading */}
         <div ref={headingRef} className="mb-4 md:mb-12">
-          <span className="eyebrow mb-4 block">Design Philosophy</span>
+          <span className="eyebrow mb-4 block">{cfg.heading.eyebrow}</span>
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-heading font-black tracking-tight leading-[1.1]">
-            Crafted with
+            {cfg.heading.title}
             <br />
-            <span className="text-gradient">Purpose</span>
+            <span className="text-gradient">{cfg.heading.gradientText}</span>
           </h2>
           <p className="mt-3 md:mt-6 text-sm md:text-lg text-muted-foreground max-w-2xl">
-            Every design decision serves one goal: turning visitors into booked
-            consultations for Outdoor Renovations.
+            {cfg.heading.subtitle}
           </p>
         </div>
 
@@ -135,31 +106,28 @@ export function DesignPhilosophy() {
             Brand Palette
           </p>
           <div className="grid grid-cols-3 sm:grid-cols-5 gap-3 sm:gap-4">
-            {[
-              { color: "#1B3128", label: "Dark Green" },
-              { color: "#2D4A3E", label: "Primary" },
-              { color: "#6B8F7B", label: "Light Green" },
-              { color: "#F0EBE3", label: "Cream" },
-              { color: "#1A1A1A", label: "Charcoal" },
-            ].map((swatch) => (
-              <div
-                key={swatch.label}
-                className="palette-swatch flex flex-col items-center gap-1.5 md:gap-3"
-              >
+            {cfg.paletteSwatches.map((swatch) => {
+              const color = siteConfig.colors[swatch.colorKey];
+              return (
                 <div
-                  className="w-full aspect-[2/1] md:aspect-[3/2] rounded-xl md:rounded-2xl border border-white/10 transition-transform duration-300 hover:scale-105"
-                  style={{ background: swatch.color }}
-                />
-                <div className="text-center">
-                  <span className="block text-sm font-semibold text-foreground">
-                    {swatch.label}
-                  </span>
-                  <span className="block text-xs font-mono text-muted-foreground mt-0.5">
-                    {swatch.color}
-                  </span>
+                  key={swatch.label}
+                  className="palette-swatch flex flex-col items-center gap-1.5 md:gap-3"
+                >
+                  <div
+                    className="w-full aspect-[2/1] md:aspect-[3/2] rounded-xl md:rounded-2xl border border-white/10 transition-transform duration-300 hover:scale-105"
+                    style={{ background: color }}
+                  />
+                  <div className="text-center">
+                    <span className="block text-sm font-semibold text-foreground">
+                      {swatch.label}
+                    </span>
+                    <span className="block text-xs font-mono text-muted-foreground mt-0.5">
+                      {color}
+                    </span>
+                  </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
 
@@ -168,22 +136,26 @@ export function DesignPhilosophy() {
           ref={cardsRef}
           className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6"
         >
-          {principles.map(({ icon: Icon, title, description, color }) => (
-            <div key={title} className="card-showcase p-4 md:p-6">
-              <div
-                className="w-10 h-10 md:w-12 md:h-12 rounded-lg flex items-center justify-center mb-2 md:mb-4"
-                style={{ background: `${color}20` }}
-              >
-                <Icon className="w-6 h-6" style={{ color }} />
+          {cfg.principles.map(({ icon: iconName, title, description, colorKey }) => {
+            const Icon = getIcon(iconName);
+            const color = siteConfig.colors[colorKey];
+            return (
+              <div key={title} className="card-showcase p-4 md:p-6">
+                <div
+                  className="w-10 h-10 md:w-12 md:h-12 rounded-lg flex items-center justify-center mb-2 md:mb-4"
+                  style={{ background: `${color}20` }}
+                >
+                  <Icon className="w-6 h-6" style={{ color }} />
+                </div>
+                <h3 className="text-base font-bold text-foreground mb-2">
+                  {title}
+                </h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  {description}
+                </p>
               </div>
-              <h3 className="text-base font-bold text-foreground mb-2">
-                {title}
-              </h3>
-              <p className="text-sm text-muted-foreground leading-relaxed">
-                {description}
-              </p>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
 

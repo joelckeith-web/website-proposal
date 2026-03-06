@@ -5,46 +5,12 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { BrowserFrame } from "../ui/DeviceFrame";
 import { ScreenImage } from "../ui/ScreenImage";
-import { Phone, MousePointerClick, FileText, MapPin } from "lucide-react";
+import { siteConfig } from "@/lib/site.config";
+import { getIcon } from "@/lib/icons";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const tabs = [
-  {
-    icon: Phone,
-    title: "Click-to-Call",
-    description:
-      "Sticky header with phone number on every page. One tap from any screen to connect directly with the business.",
-    screenshot: "hero" as const,
-    // Zoom into the phone number in the top-right nav
-    zoom: { scale: 2.24, origin: "88% 4%" },
-  },
-  {
-    icon: MousePointerClick,
-    title: "Strategic CTAs",
-    description:
-      '"Get a Consultation" buttons placed at every natural decision point throughout the site. Above the fold, after services, below reviews.',
-    screenshot: "hero" as const,
-    // Zoom into the CTA buttons below the hero text
-    zoom: { scale: 1.54, origin: "35% 75%" },
-  },
-  {
-    icon: FileText,
-    title: "Smart Contact Forms",
-    description:
-      "React Hook Form with field validation, designed for quick mobile completion. Name, phone, service type — three fields to a lead.",
-    screenshot: "service-detail" as const,
-    zoom: null,
-  },
-  {
-    icon: MapPin,
-    title: "10+ Location Pages",
-    description:
-      "City-specific landing pages targeting local search intent across the Austin metro area. Each page is SEO-optimized for that city.",
-    screenshot: "location-page" as const,
-    zoom: null,
-  },
-];
+const tabs = siteConfig.sections.conversionSection.tabs;
 
 export function ConversionSection() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -54,6 +20,8 @@ export function ConversionSection() {
   const panelRef = useRef<HTMLDivElement>(null);
   const imageRef = useRef<HTMLDivElement>(null);
   const hasEnteredView = useRef(false);
+
+  const cfg = siteConfig.sections.conversionSection;
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -145,7 +113,7 @@ export function ConversionSection() {
   }, [activeTab]);
 
   const current = tabs[activeTab];
-  const Icon = current.icon;
+  const Icon = getIcon(current.icon);
 
   return (
     <section
@@ -155,15 +123,14 @@ export function ConversionSection() {
       <div className="relative z-10 mx-auto w-full max-w-7xl">
         {/* Heading */}
         <div ref={headingRef} className="text-center mb-4 md:mb-16">
-          <span className="eyebrow mb-4 block">Conversion Engine</span>
+          <span className="eyebrow mb-4 block">{cfg.heading.eyebrow}</span>
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-heading font-black tracking-tight leading-[1.1]">
-            Every Page Drives
+            {cfg.heading.title}
             <br />
-            <span className="text-gradient">One Action</span>
+            <span className="text-gradient">{cfg.heading.gradientText}</span>
           </h2>
           <p className="mt-3 md:mt-6 text-sm md:text-lg text-muted-foreground max-w-2xl mx-auto">
-            Book a consultation. That&apos;s the goal of every button, form, and
-            call-to-action across the entire site.
+            {cfg.heading.subtitle}
           </p>
         </div>
 
@@ -172,7 +139,7 @@ export function ConversionSection() {
           {/* Tab buttons — stacked top-left */}
           <div className="grid grid-cols-2 lg:flex lg:flex-col gap-1.5 lg:w-60 shrink-0 self-start">
             {tabs.map((tab, i) => {
-              const TabIcon = tab.icon;
+              const TabIcon = getIcon(tab.icon);
               return (
                 <button
                   key={tab.title}
@@ -184,7 +151,7 @@ export function ConversionSection() {
                   }`}
                   style={
                     i === activeTab
-                      ? { background: "linear-gradient(135deg, #2D4A3E, #6B8F7B)" }
+                      ? { background: `linear-gradient(135deg, var(--color-primary), var(--color-primary-light))` }
                       : undefined
                   }
                 >
@@ -214,7 +181,7 @@ export function ConversionSection() {
             </div>
 
             {/* Screenshot with zoom + highlight overlays */}
-            <BrowserFrame url="outdoor-renovations.vercel.app">
+            <BrowserFrame url={siteConfig.business.liveUrl}>
               <div className="aspect-video overflow-hidden relative">
                 <div
                   ref={imageRef}

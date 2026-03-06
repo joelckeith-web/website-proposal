@@ -5,18 +5,13 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { PhoneFrame } from "../ui/DeviceFrame";
 import { ScreenImage } from "../ui/ScreenImage";
-import { Smartphone, Fingerprint, Gauge, Globe } from "lucide-react";
+import { siteConfig } from "@/lib/site.config";
+import { getIcon } from "@/lib/icons";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const stats = [
-  { icon: Smartphone, value: "70%", label: "Mobile Visitors" },
-  { icon: Fingerprint, value: "< 2s", label: "Load Time" },
-  { icon: Gauge, value: "95+", label: "Mobile Score" },
-  { icon: Globe, value: "100%", label: "Responsive" },
-];
-
 export function MobileExperience() {
+  const cfg = siteConfig.sections.mobileExperience;
   const sectionRef = useRef<HTMLElement>(null);
   const headingRef = useRef<HTMLDivElement>(null);
   const phonesRef = useRef<HTMLDivElement>(null);
@@ -112,15 +107,14 @@ export function MobileExperience() {
       <div className="relative z-10 mx-auto w-full max-w-7xl">
         {/* Heading */}
         <div ref={headingRef} className="text-center mb-6 md:mb-16">
-          <span className="eyebrow mb-4 block">Mobile Experience</span>
+          <span className="eyebrow mb-4 block">{cfg.heading.eyebrow}</span>
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-heading font-black tracking-tight leading-[1.1]">
-            Built for the
+            {cfg.heading.title}
             <br />
-            <span className="text-gradient">Thumb-First</span> Generation
+            <span className="text-gradient">{cfg.heading.gradientText}</span>{cfg.heading.titleAfter}
           </h2>
           <p className="mt-6 text-lg text-muted-foreground max-w-2xl mx-auto">
-            70% of your visitors will arrive on a phone. Every interaction is
-            optimized for touch, speed, and instant action.
+            {cfg.heading.subtitle}
           </p>
         </div>
 
@@ -129,32 +123,29 @@ export function MobileExperience() {
           ref={phonesRef}
           className="flex justify-center items-end gap-3 md:gap-8 mb-10 md:mb-16"
         >
-          {(["mobile-home", "mobile-service-detail", "mobile-services"] as const).map(
-            (variant, i) => (
-              <div
-                key={variant}
-                className={`phone-item ${i === 1 ? "w-[140px] md:w-[220px] z-10" : "w-[100px] md:w-[180px]"}`}
-                style={{ transformOrigin: "bottom center" }}
-              >
-                <PhoneFrame>
-                  {i === 1 ? (
-                    /* Center phone: perpetual looping scroll */
-                    <div className="phone-scroll-slow" style={{ height: "100%", overflow: "hidden" }}>
-                      {/* eslint-disable @next/next/no-img-element */}
-                      <img
-                        src="/screenshots/mobile-service-detail-full.png"
-                        alt="Mobile service detail - scrolling"
-                        className="w-full"
-                        loading="lazy"
-                      />
-                    </div>
-                  ) : (
-                    <ScreenImage variant={variant} />
-                  )}
-                </PhoneFrame>
-              </div>
-            )
-          )}
+          {cfg.phones.map((phone) => (
+            <div
+              key={phone.variant}
+              className={`phone-item ${phone.isCenter ? "w-[140px] md:w-[220px] z-10" : "w-[100px] md:w-[180px]"}`}
+              style={{ transformOrigin: "bottom center" }}
+            >
+              <PhoneFrame>
+                {phone.isCenter && phone.scrollImage ? (
+                  <div className="phone-scroll-slow" style={{ height: "100%", overflow: "hidden" }}>
+                    {/* eslint-disable @next/next/no-img-element */}
+                    <img
+                      src={phone.scrollImage.src}
+                      alt={phone.scrollImage.alt}
+                      className="w-full"
+                      loading="lazy"
+                    />
+                  </div>
+                ) : (
+                  <ScreenImage variant={phone.variant} />
+                )}
+              </PhoneFrame>
+            </div>
+          ))}
         </div>
 
         {/* Stats */}
@@ -162,13 +153,16 @@ export function MobileExperience() {
           ref={statsRef}
           className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-3xl mx-auto"
         >
-          {stats.map(({ icon: Icon, value, label }) => (
-            <div key={label} className="metric-card">
-              <Icon className="w-5 h-5 text-brand-light mx-auto mb-3" />
-              <div className="metric-value text-gradient-brand">{value}</div>
-              <div className="metric-label">{label}</div>
-            </div>
-          ))}
+          {cfg.stats.map(({ icon: iconName, value, label }) => {
+            const Icon = getIcon(iconName);
+            return (
+              <div key={label} className="metric-card">
+                <Icon className="w-5 h-5 text-brand-light mx-auto mb-3" />
+                <div className="metric-value text-gradient-brand">{value}</div>
+                <div className="metric-label">{label}</div>
+              </div>
+            );
+          })}
         </div>
       </div>
 

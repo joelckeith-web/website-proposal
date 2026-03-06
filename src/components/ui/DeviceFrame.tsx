@@ -1,6 +1,7 @@
 "use client";
 
 import { type ReactNode } from "react";
+import { siteConfig } from "@/lib/site.config";
 
 interface BrowserFrameProps {
   children: ReactNode;
@@ -10,7 +11,7 @@ interface BrowserFrameProps {
 
 export function BrowserFrame({
   children,
-  url = "outdoor-renovations.vercel.app",
+  url = siteConfig.business.liveUrl,
   className = "",
 }: BrowserFrameProps) {
   return (

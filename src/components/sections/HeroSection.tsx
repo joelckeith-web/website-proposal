@@ -4,6 +4,7 @@ import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ChevronDown } from "lucide-react";
+import { siteConfig } from "@/lib/site.config";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -92,27 +93,26 @@ export function HeroSection() {
       <div className="relative z-10 flex flex-col items-center text-center px-6 pt-20">
         {/* Badge */}
         <div ref={badgeRef} className="mb-6">
-          <span className="eyebrow">Website Showcase</span>
+          <span className="eyebrow">{siteConfig.hero.badge}</span>
         </div>
 
         {/* Heading */}
         <div ref={headingRef}>
           <h1 className="text-5xl md:text-7xl lg:text-8xl xl:text-9xl font-heading font-black tracking-tight leading-[0.95]">
-            <span className="text-foreground">Outdoor</span>
+            <span className="text-foreground">{siteConfig.hero.titleLine1}</span>
             <br />
-            <span className="text-gradient">Renovations</span>
+            <span className="text-gradient">{siteConfig.hero.titleGradient}</span>
           </h1>
 
           <p className="mt-6 text-lg md:text-xl text-muted-foreground max-w-2xl">
-            Your digital presence, designed to convert visitors into
-            consultations.
+            {siteConfig.hero.subtitle}
           </p>
 
           {/* Tagline line */}
           <div className="mt-6 flex items-center justify-center gap-3">
             <div className="line-accent" />
             <span className="text-xs font-bold uppercase tracking-[0.25em] text-muted-foreground">
-              Design &bull; Landscape &bull; Maintain
+              {siteConfig.business.tagline}
             </span>
             <div className="line-accent" />
           </div>
@@ -123,8 +123,8 @@ export function HeroSection() {
           <div ref={laptopRef} style={{ transformStyle: "preserve-3d" }}>
             {/* eslint-disable @next/next/no-img-element */}
             <img
-              src="/images/hero-macbook.png"
-              alt="Outdoor Renovations website displayed on MacBook Pro"
+              src={siteConfig.hero.heroImage.src}
+              alt={siteConfig.hero.heroImage.alt}
               className="w-full h-auto block"
               loading="eager"
             />
@@ -135,7 +135,7 @@ export function HeroSection() {
       {/* Scroll indicator */}
       <div className="relative mt-8 mb-4 flex flex-col items-center gap-2 z-10">
         <span className="text-[10px] font-bold text-muted-foreground tracking-widest uppercase">
-          Scroll to explore
+          {siteConfig.hero.scrollCta}
         </span>
         <ChevronDown className="w-4 h-4 animate-bounce text-brand-light" />
       </div>

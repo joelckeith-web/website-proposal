@@ -5,10 +5,12 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { BrowserFrame, PhoneFrame } from "../ui/DeviceFrame";
 import { ScreenImage } from "../ui/ScreenImage";
+import { siteConfig } from "@/lib/site.config";
 
 gsap.registerPlugin(ScrollTrigger);
 
 export function ServicesShowcase() {
+  const cfg = siteConfig.sections.servicesShowcase;
   const sectionRef = useRef<HTMLElement>(null);
   const headingRef = useRef<HTMLDivElement>(null);
   const devicesRef = useRef<HTMLDivElement>(null);
@@ -110,15 +112,14 @@ export function ServicesShowcase() {
       <div className="relative z-10 mx-auto w-full max-w-7xl">
         {/* Heading */}
         <div ref={headingRef} className="mb-6 md:mb-16">
-          <span className="eyebrow mb-4 block">Service Pages</span>
+          <span className="eyebrow mb-4 block">{cfg.heading.eyebrow}</span>
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-heading font-black tracking-tight leading-[1.1]">
-            8 Expert Services,
+            {cfg.heading.title}
             <br />
-            <span className="text-gradient">Each with Its Own Stage</span>
+            <span className="text-gradient">{cfg.heading.gradientText}</span>
           </h2>
           <p className="mt-6 text-lg text-muted-foreground max-w-2xl">
-            Every service has a dedicated page with detailed content, FAQs,
-            project galleries, and a clear path to booking a consultation.
+            {cfg.heading.subtitle}
           </p>
         </div>
 
@@ -129,9 +130,9 @@ export function ServicesShowcase() {
         >
           {/* Laptop */}
           <div className="laptop-wrapper w-full max-w-3xl relative">
-            <BrowserFrame url="outdoor-renovations.vercel.app/services/landscape-design">
+            <BrowserFrame url={cfg.browserUrl}>
               <div className="aspect-video">
-                <ScreenImage variant="service-detail" />
+                <ScreenImage variant={cfg.laptopScreenshot} />
               </div>
             </BrowserFrame>
             {/* Fake mouse cursor — positioned absolutely, GSAP animates left/top */}
@@ -158,8 +159,8 @@ export function ServicesShowcase() {
               <div className="phone-scroll-slow overflow-hidden" style={{ height: "100%" }}>
                 {/* eslint-disable @next/next/no-img-element */}
                 <img
-                  src="/screenshots/mobile-homepage-full.png"
-                  alt="Mobile homepage - scrolling"
+                  src={cfg.scrollImage.src}
+                  alt={cfg.scrollImage.alt}
                   className="w-full"
                   loading="lazy"
                 />

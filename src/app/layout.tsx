@@ -1,27 +1,14 @@
 import type { Metadata, Viewport } from "next";
-import { Playfair_Display, Poppins } from "next/font/google";
+import { siteConfig, buildCssVariables, buildGoogleFontsUrl } from "@/lib/site.config";
 import "./globals.css";
 
-const playfair = Playfair_Display({
-  subsets: ["latin"],
-  variable: "--font-playfair",
-  weight: ["400", "600", "700", "800", "900"],
-});
-
-const poppins = Poppins({
-  subsets: ["latin"],
-  variable: "--font-poppins",
-  weight: ["400", "500", "600", "700", "800", "900"],
-});
-
 export const metadata: Metadata = {
-  title: "Outdoor Renovations | Website Showcase",
-  description:
-    "A premium website presentation showcasing the design, functionality, and craftsmanship built for Outdoor Renovations.",
+  title: siteConfig.metadata.title,
+  description: siteConfig.metadata.description,
 };
 
 export const viewport: Viewport = {
-  themeColor: "#000000",
+  themeColor: siteConfig.colors.background,
   width: "device-width",
   initialScale: 1,
 };
@@ -31,8 +18,20 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const cssVars = buildCssVariables();
+  const fontsUrl = buildGoogleFontsUrl();
+
   return (
-    <html lang="en" className={`${playfair.variable} ${poppins.variable}`}>
+    <html lang="en" style={cssVars as React.CSSProperties}>
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link
+          rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossOrigin="anonymous"
+        />
+        <link rel="stylesheet" href={fontsUrl} />
+      </head>
       <body className="font-body antialiased bg-background text-foreground">
         {children}
       </body>

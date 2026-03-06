@@ -9,29 +9,27 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        background: "#000000",
-        foreground: "#f5f5f5",
-        // Outdoor Renovations brand colors as accents
+        background: "var(--color-background)",
+        foreground: "var(--color-foreground)",
         brand: {
-          DEFAULT: "#2D4A3E",
-          dark: "#1B3128",
-          light: "#6B8F7B",
-          cream: "#F0EBE3",
+          DEFAULT: "rgb(var(--color-primary-rgb) / <alpha-value>)",
+          dark: "rgb(var(--color-primary-dark-rgb) / <alpha-value>)",
+          light: "rgb(var(--color-primary-light-rgb) / <alpha-value>)",
+          cream: "var(--color-cream)",
         },
-        // ASP presentation accents
         accent: {
-          DEFAULT: "#4CC9F0",
-          purple: "#9F4CFF",
+          DEFAULT: "rgb(var(--color-accent-rgb) / <alpha-value>)",
+          purple: "rgb(var(--color-accent-alt-rgb) / <alpha-value>)",
         },
         muted: {
-          DEFAULT: "#111111",
-          foreground: "#8a8a8a",
+          DEFAULT: "var(--color-muted)",
+          foreground: "var(--color-muted-foreground)",
         },
         card: "rgba(255, 255, 255, 0.03)",
       },
       fontFamily: {
-        heading: ["var(--font-playfair)", "serif"],
-        body: ["var(--font-poppins)", "sans-serif"],
+        heading: ["var(--font-heading)"],
+        body: ["var(--font-body)"],
       },
       animation: {
         "fade-in": "fadeIn 0.6s ease-out forwards",

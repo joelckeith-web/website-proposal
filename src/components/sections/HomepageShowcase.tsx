@@ -5,29 +5,12 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { BrowserFrame } from "../ui/DeviceFrame";
 import { ScreenImage } from "../ui/ScreenImage";
+import { siteConfig } from "@/lib/site.config";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const annotations = [
-  {
-    label: "Video hero to show quality of work",
-    position: { top: "40%", left: "-14%" },
-    dotSide: "right" as const,
-    delay: 0,
-  },
-  {
-    label: "Click-to-call CTA",
-    position: { top: "7%", right: "-10%" },
-    dotSide: "left" as const,
-    delay: 0.2,
-  },
-  {
-    label: "Immediate credibility metrics",
-    position: { bottom: "-4%", left: "50%", transform: "translateX(-50%)" },
-    dotSide: "top" as const,
-    delay: 0.4,
-  },
-];
+const cfg = siteConfig.sections.homepageShowcase;
+const annotations = cfg.annotations;
 
 export function HomepageShowcase() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -98,15 +81,14 @@ export function HomepageShowcase() {
       <div className="relative z-10 mx-auto w-full max-w-7xl">
         {/* Heading */}
         <div ref={headingRef} className="text-center mb-6 md:mb-16">
-          <span className="eyebrow mb-4 block">Homepage</span>
+          <span className="eyebrow mb-4 block">{cfg.heading.eyebrow}</span>
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-heading font-black tracking-tight leading-[1.1]">
-            First Impressions
+            {cfg.heading.title}
             <br />
-            <span className="text-gradient">That Convert</span>
+            <span className="text-gradient">{cfg.heading.gradientText}</span>
           </h2>
           <p className="mt-6 text-lg text-muted-foreground max-w-2xl mx-auto">
-            A cinematic hero with video background, trust badges above the fold,
-            and a services carousel that drives exploration.
+            {cfg.heading.subtitle}
           </p>
         </div>
 

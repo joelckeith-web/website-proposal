@@ -1,18 +1,9 @@
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
+import { siteConfig } from "@/lib/site.config";
 
-const SECTIONS = [
-  { id: "hero", label: "Intro" },
-  { id: "philosophy", label: "Philosophy" },
-  { id: "homepage", label: "Homepage" },
-  { id: "services", label: "Services" },
-  { id: "mobile", label: "Mobile" },
-  { id: "trust", label: "Trust" },
-  { id: "conversion", label: "Conversion" },
-  { id: "technical", label: "Technical" },
-  { id: "closing", label: "Launch" },
-];
+const SECTIONS = siteConfig.navigation;
 
 export function Navigation() {
   const [activeSection, setActiveSection] = useState(0);
@@ -68,7 +59,7 @@ export function Navigation() {
         {/* Logo */}
         <div className="flex items-center gap-2">
           <span className="text-lg font-heading font-bold text-gradient-brand tracking-tight">
-            OR
+            {siteConfig.business.abbreviation}
           </span>
           <span className="hidden md:inline text-xs text-muted-foreground font-medium">
             Website Showcase

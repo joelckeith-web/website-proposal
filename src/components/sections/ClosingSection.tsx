@@ -4,25 +4,17 @@ import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ArrowUpRight, Check } from "lucide-react";
+import { siteConfig } from "@/lib/site.config";
 
 gsap.registerPlugin(ScrollTrigger);
-
-const deliverables = [
-  "Custom-designed responsive website",
-  "8 dedicated service pages with FAQs",
-  "10+ city-specific location pages",
-  "Auto-scrolling review carousel",
-  "Click-to-call and contact forms on every page",
-  "SEO-ready structure with schema markup",
-  "Sanity CMS for content management",
-  "Vercel deployment with global CDN",
-];
 
 export function ClosingSection() {
   const sectionRef = useRef<HTMLElement>(null);
   const headingRef = useRef<HTMLDivElement>(null);
   const listRef = useRef<HTMLDivElement>(null);
   const ctaRef = useRef<HTMLDivElement>(null);
+
+  const cfg = siteConfig.sections.closingSection;
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -85,22 +77,21 @@ export function ClosingSection() {
         className="absolute inset-0"
         style={{
           background:
-            "radial-gradient(ellipse at center, rgba(45, 74, 62, 0.2) 0%, transparent 60%)",
+            "radial-gradient(ellipse at center, rgb(var(--color-primary-rgb) / 0.2) 0%, transparent 60%)",
         }}
       />
 
       <div className="relative z-10 mx-auto w-full max-w-5xl text-center">
         {/* Heading */}
         <div ref={headingRef} className="mb-8 md:mb-12">
-          <span className="eyebrow mb-4 block">What&apos;s Included</span>
+          <span className="eyebrow mb-4 block">{cfg.heading.eyebrow}</span>
           <h2 className="text-4xl md:text-5xl lg:text-7xl font-heading font-black tracking-tight leading-[1.1]">
-            Ready to
+            {cfg.heading.title}
             <br />
-            <span className="text-gradient">Launch</span>
+            <span className="text-gradient">{cfg.heading.gradientText}</span>
           </h2>
           <p className="mt-6 text-lg text-muted-foreground max-w-2xl mx-auto">
-            A complete digital presence engineered to generate leads for Outdoor
-            Renovations from day one.
+            {cfg.heading.subtitle}
           </p>
         </div>
 
@@ -109,7 +100,7 @@ export function ClosingSection() {
           ref={listRef}
           className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-left max-w-4xl mx-auto mb-10 md:mb-16"
         >
-          {deliverables.map((item) => (
+          {cfg.deliverables.map((item) => (
             <div
               key={item}
               className="flex items-center gap-4 py-3 px-5 rounded-xl bg-white/[0.03] border border-white/[0.06]"
@@ -125,22 +116,22 @@ export function ClosingSection() {
         {/* CTA */}
         <div ref={ctaRef} className="space-y-6">
           <a
-            href="https://outdoor-renovations.vercel.app"
+            href={cfg.cta.url}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-3 px-8 py-4 rounded-full text-lg font-bold transition-all hover:scale-105 hover:shadow-2xl"
             style={{
-              background: "linear-gradient(135deg, #2D4A3E 0%, #6B8F7B 100%)",
-              color: "#F0EBE3",
-              boxShadow: "0 8px 30px rgba(45, 74, 62, 0.3)",
+              background: "linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-light) 100%)",
+              color: "var(--color-cream)",
+              boxShadow: "0 8px 30px rgb(var(--color-primary-rgb) / 0.3)",
             }}
           >
-            View the Live Website
+            {cfg.cta.text}
             <ArrowUpRight className="w-5 h-5" />
           </a>
 
           <p className="text-sm text-muted-foreground">
-            outdoor-renovations.vercel.app
+            {siteConfig.business.liveUrl}
           </p>
         </div>
 
@@ -149,12 +140,12 @@ export function ClosingSection() {
           <div className="flex items-center justify-center gap-3 mb-4">
             <div className="line-accent" />
             <span className="text-xs font-bold uppercase tracking-[0.25em] text-muted-foreground">
-              ASP &mdash; Assess. Strategize. Perform.
+              {cfg.footer.brand}
             </span>
             <div className="line-accent" />
           </div>
           <p className="text-xs text-muted-foreground/50">
-            Website showcase presentation for Outdoor Renovations
+            {cfg.footer.description}
           </p>
         </div>
       </div>

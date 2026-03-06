@@ -3,62 +3,13 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import {
-  Search,
-  Code2,
-  Database,
-  Shield,
-  FileJson,
-  Layers,
-} from "lucide-react";
+import { siteConfig } from "@/lib/site.config";
+import { getIcon } from "@/lib/icons";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const techFeatures = [
-  {
-    icon: Code2,
-    title: "Next.js 14",
-    description: "React server components, app router, and automatic code splitting",
-    tag: "Framework",
-  },
-  {
-    icon: Layers,
-    title: "Tailwind CSS",
-    description: "Utility-first styling with custom design tokens for brand consistency",
-    tag: "Styling",
-  },
-  {
-    icon: Database,
-    title: "Sanity CMS",
-    description: "Headless CMS with real-time content editing and image optimization",
-    tag: "CMS",
-  },
-  {
-    icon: Search,
-    title: "SEO-Ready",
-    description: "Meta tags, Open Graph, sitemap, robots.txt — all pre-configured",
-    tag: "SEO",
-  },
-  {
-    icon: FileJson,
-    title: "Schema Markup",
-    description: "JSON-LD structured data for local business, services, and reviews",
-    tag: "Structured Data",
-  },
-  {
-    icon: Shield,
-    title: "TypeScript",
-    description: "Full type safety across components, config, and data layer",
-    tag: "Language",
-  },
-];
-
-const performanceMetrics = [
-  { label: "SEO", value: 100 },
-  { label: "Best Practices", value: 100 },
-  { label: "Accessibility", value: 98 },
-  { label: "Performance", value: 95 },
-];
+const techFeatures = siteConfig.sections.technicalSection.features;
+const performanceMetrics = siteConfig.sections.technicalSection.metrics;
 
 function AnimatedRing({ label, value }: { label: string; value: number }) {
   const [displayValue, setDisplayValue] = useState(0);
@@ -112,7 +63,7 @@ function AnimatedRing({ label, value }: { label: string; value: number }) {
         style={
           {
             "--ring-pct": "0",
-            background: `conic-gradient(from 0deg, #2D4A3E 0%, #6B8F7B calc(var(--ring-pct) * 0.5%), #4CC9F0 calc(var(--ring-pct) * 1%), rgba(255,255,255,0.06) calc(var(--ring-pct) * 1%))`,
+            background: `conic-gradient(from 0deg, var(--color-primary) 0%, var(--color-primary-light) calc(var(--ring-pct) * 0.5%), var(--color-accent) calc(var(--ring-pct) * 1%), rgba(255,255,255,0.06) calc(var(--ring-pct) * 1%))`,
           } as React.CSSProperties
         }
       >
@@ -120,7 +71,7 @@ function AnimatedRing({ label, value }: { label: string; value: number }) {
           <span
             className="text-3xl md:text-4xl font-black"
             style={{
-              background: "linear-gradient(135deg, #2D4A3E 0%, #6B8F7B 50%, #4CC9F0 100%)",
+              background: "linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-light) 50%, var(--color-accent) 100%)",
               WebkitBackgroundClip: "text",
               WebkitTextFillColor: "transparent",
               backgroundClip: "text",
@@ -141,6 +92,7 @@ export function TechnicalSection() {
   const sectionRef = useRef<HTMLElement>(null);
   const headingRef = useRef<HTMLDivElement>(null);
   const featuresRef = useRef<HTMLDivElement>(null);
+  const cfg = siteConfig.sections.technicalSection;
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -193,15 +145,14 @@ export function TechnicalSection() {
       <div className="relative z-10 mx-auto w-full max-w-7xl">
         {/* Heading */}
         <div ref={headingRef} className="mb-4 md:mb-16">
-          <span className="eyebrow mb-2 md:mb-4 block">Under the Hood</span>
+          <span className="eyebrow mb-2 md:mb-4 block">{cfg.heading.eyebrow}</span>
           <h2 className="text-3xl md:text-5xl lg:text-6xl font-heading font-black tracking-tight leading-[1.1]">
-            Engineered for
+            {cfg.heading.title}
             <br />
-            <span className="text-gradient">Performance</span>
+            <span className="text-gradient">{cfg.heading.gradientText}</span>
           </h2>
           <p className="mt-3 md:mt-6 text-sm md:text-lg text-muted-foreground max-w-2xl">
-            Built on modern infrastructure that loads fast, ranks high, and
-            scales with your business.
+            {cfg.heading.subtitle}
           </p>
         </div>
 
@@ -217,28 +168,25 @@ export function TechnicalSection() {
           ref={featuresRef}
           className="grid grid-cols-2 lg:grid-cols-3 gap-3 md:gap-5"
         >
-          {techFeatures.map(({ icon: Icon, title, description, tag }) => (
-            <div key={title} className="card-showcase p-3 md:p-6">
-              <div className="flex flex-col md:flex-row md:items-start gap-2 md:gap-4">
-                <div className="w-8 h-8 md:w-10 md:h-10 rounded-lg flex items-center justify-center shrink-0 bg-brand/20">
-                  <Icon className="w-4 h-4 md:w-5 md:h-5 text-brand-light" />
-                </div>
-                <div>
-                  <div className="flex items-center gap-1.5 md:gap-2 mb-1">
-                    <h3 className="text-xs md:text-sm font-bold text-foreground">
-                      {title}
-                    </h3>
-                    <span className="feature-tag text-[8px] md:text-[10px] py-0.5 px-1.5 md:px-2">
-                      {tag}
-                    </span>
+          {techFeatures.map(({ icon: iconName, title, description, tag }) => {
+            const Icon = getIcon(iconName);
+            return (
+              <div key={title} className="card-showcase p-3 md:p-6">
+                <div className="flex flex-col md:flex-row md:items-start gap-2 md:gap-4">
+                  <div className="w-8 h-8 md:w-10 md:h-10 rounded-lg flex items-center justify-center shrink-0 bg-brand/20">
+                    <Icon className="w-4 h-4 md:w-5 md:h-5 text-brand-light" />
                   </div>
-                  <p className="text-[10px] md:text-xs text-muted-foreground leading-relaxed">
-                    {description}
-                  </p>
+                  <div>
+                    <div className="flex items-center gap-1.5 md:gap-2 mb-1">
+                      <h3 className="text-xs md:text-sm font-bold text-foreground">{title}</h3>
+                      <span className="feature-tag text-[8px] md:text-[10px] py-0.5 px-1.5 md:px-2">{tag}</span>
+                    </div>
+                    <p className="text-[10px] md:text-xs text-muted-foreground leading-relaxed">{description}</p>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
 
