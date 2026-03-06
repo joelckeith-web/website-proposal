@@ -112,6 +112,13 @@ export function ConversionSection() {
 
   // Animate panel + image zoom on tab change
   useEffect(() => {
+    // Always kill running tweens and snap scale to 1 first
+    // This prevents stale zoom + wrong transform-origin from previous tab
+    if (imageRef.current) {
+      gsap.killTweensOf(imageRef.current);
+      gsap.set(imageRef.current, { scale: 1 });
+    }
+
     if (panelRef.current) {
       gsap.fromTo(
         panelRef.current,
@@ -127,22 +134,14 @@ export function ConversionSection() {
     if (imageRef.current) {
       const zoom = tabs[activeTab].zoom;
       if (zoom) {
-        // Reset to normal first, then push in slowly
-        gsap.set(imageRef.current, { scale: 1 });
         gsap.to(imageRef.current, {
           scale: zoom.scale,
           duration: 2,
           ease: "power2.out",
           delay: 0.5,
         });
-      } else {
-        // Reset to normal view
-        gsap.to(imageRef.current, {
-          scale: 1,
-          duration: 0.8,
-          ease: "power2.out",
-        });
       }
+      // Non-zoom tabs stay at scale 1 (already set above)
     }
   }, [activeTab]);
 
@@ -234,9 +233,9 @@ export function ConversionSection() {
                     key={activeTab}
                     className="absolute pointer-events-none z-10 highlighter-swipe"
                     style={{
-                      top: "48%",
-                      left: "33%",
-                      width: "24%",
+                      top: "37%",
+                      left: "21%",
+                      width: "27%",
                       height: "4.5%",
                       background: "rgba(107, 143, 123, 0.4)",
                       borderRadius: "2px",
